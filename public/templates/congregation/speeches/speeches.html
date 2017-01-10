@@ -13,13 +13,19 @@
                         <thead>
                             <tr>
                                 <th>#</th>
+                                <th>Code</th>
                                 <th>Name</th>
                                 <th>Nearest discourse</th>
                             </tr>
                         </thead>
 
-                        <tr *ngFor="let speech of speeches; let isEven = even; let $index = index;">
+                        <tr
+                            *ngFor="let speech of speeches| paginate: { itemsPerPage: itemsPerPage, currentPage: p };
+                            let isEven = even;
+                            let $index = index;"
+                        >
                             <td>{{$index+1}}</td>
+                            <td>№ {{speech.code}}-U</td>
                             <td>
                                 {{speech.name}}
                                 <div class="additional">
@@ -31,6 +37,12 @@
                         </tr>
                     </table>
                 </div>
+
+                <pagination-controls (pageChange)="p = $event" class="adminPagination"></pagination-controls>
+                <select class="form-control itemsPerPage" [(ngModel)]="itemsPerPage">
+                    <option *ngFor="let page of pages">{{page}}</option>
+                </select>
+
             </div>
         </div>
     </div>
