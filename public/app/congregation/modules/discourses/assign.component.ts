@@ -30,6 +30,7 @@ export class AssignComponent implements OnDestroy, OnInit {
     public speakers: Array<any>;
     public debtors: Array<any>;
     public favorites: Array<any>;
+    public current: string;
 
 
     constructor(
@@ -54,6 +55,7 @@ export class AssignComponent implements OnDestroy, OnInit {
     ngOnInit() {
         this.loadFavorites();
         this.loadDebtors();
+        this.setCurrent('favorites');
     }
 
     loadDiscourse( id ) {
@@ -96,6 +98,7 @@ export class AssignComponent implements OnDestroy, OnInit {
 
     reloadSpeakers() {
         if ( this.speakerName.length > 2 ) {
+            this.setCurrent('search');
             this.speakerService.search(this.speakerName).subscribe(response => {
                 this.speakers = response.json();
                 console.log(this.speakers);
@@ -104,6 +107,8 @@ export class AssignComponent implements OnDestroy, OnInit {
                     this.router.navigate(['unauthorized']);
                 }
             });
+        } else {
+            this.speakers = [];
         }
     }
 
@@ -125,5 +130,18 @@ export class AssignComponent implements OnDestroy, OnInit {
                 this.router.navigate(['unauthorized']);
             }
         });
+    }
+
+    setCurrent( current: string ) {
+        this.current = current;
+    }
+
+    setSearch() {
+        if ( this.speakers )
+        this.setCurrent('search');
+    }
+
+    isCurrent( current: string ) {
+        return this.current == current;
     }
 }

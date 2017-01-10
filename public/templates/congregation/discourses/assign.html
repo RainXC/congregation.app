@@ -2,23 +2,25 @@
     <cg-header></cg-header>
 
     <div class="container discourse animated fadeIn">
-        <div class="page-header">
-            <div class="row">
-                <div class="col-md-7 col-sm-9 col-xs-12 text-left">
-                    <h1 class="pageHeading">
-                        {{discourse?.getTime() | date:'MMMM'}} <strong>{{discourse?.getTime() | date:'Do'}}</strong> {{discourse?.getTime() | date:'YYYY'}} at {{discourse?.getTime() | date:'HH:mm'}}
-                        <div class="visible-xs-inline-block mobile-buttons animated fadeInDown animation-delay-10">
+        <div class="row">
+            <div class="page-header">
+                <div class="row">
+                    <div class="col-md-7 col-sm-9 col-xs-12 text-left">
+                        <h1 class="pageHeading">
+                            {{discourse?.getTime() | date:'MMMM'}} <strong>{{discourse?.getTime() | date:'Do'}}</strong> {{discourse?.getTime() | date:'YYYY'}} at {{discourse?.getTime() | date:'HH:mm'}}
+                            <div class="visible-xs-inline-block mobile-buttons animated fadeInDown animation-delay-10">
+                                <a (click)="back()" class="btn btn-default text-left">
+                                    <i class="glyphicon glyphicon-menu-left"></i> Back
+                                </a>
+                            </div>
+                        </h1>
+                    </div>
+                    <div class="col-md-5 col-sm-3 hidden-xs text-right">
+                        <div class="animated fadeIn animation-delay-10">
                             <a (click)="back()" class="btn btn-default text-left">
-                                <i class="glyphicon glyphicon-menu-left"></i> Back
+                                <i class="glyphicon glyphicon-menu-left"></i> <span class="hidden-xs hidden-sm">Back</span>
                             </a>
                         </div>
-                    </h1>
-                </div>
-                <div class="col-md-5 col-sm-3 hidden-xs text-right">
-                    <div class="animated fadeInDown animation-delay-10">
-                        <a (click)="back()" class="btn btn-default text-left">
-                            <i class="glyphicon glyphicon-menu-left"></i> <span class="hidden-xs hidden-sm">Back</span>
-                        </a>
                     </div>
                 </div>
             </div>
@@ -26,31 +28,50 @@
 
 
         <div class="row">
-            <div class="col-md-7">
-                <div class="searchSpeaker">
+            <div class="col-md-7 col-sm-7">
+                <div class="speaker-search">
                     <div class="row">
-                        <div class="col-md-6 col-xs-6">
-                            <input type="text" class="form-control" [(ngModel)]="speakerName" placeholder="Please enter the speaker's name" (ngModelChange)="reloadSpeakers()">
-                        </div>
-                        <div class="col-md-6 col-xs-6">
-                            or <a href="/" class="btn btn-link">Favorites</a>  <a href="/" class="btn btn-link">Debtors</a>
-                        </div>
-                    </div>
-                    <div class="row" *ngFor="let speaker of speakers">
-                        <div class="col-md-12 speaker">
-                            {{speaker.firstname}} {{speaker.lastname}}
+                        <div class="col-md-12 col-xs-12">
+                            <button class="btn btn-primary" (click)="setCurrent('favorites')">Favorites</button>
+                            <button class="btn btn-success" (click)="setCurrent('debtors')">Debtors</button>
+                            <input type="text" class="form-control speaker-search-input" (click)="setSearch()" [(ngModel)]="speakerName" placeholder="Search by speakers's name" (ngModelChange)="reloadSpeakers()">
                         </div>
                     </div>
-                    <div class="row" *ngFor="let speaker of favorites">
-                        <div class="col-md-12 speaker">
+                </div>
+                <div class="found" *ngIf="isCurrent('search')">
+                    <div class="row speaker-search-results speaker" *ngFor="let speaker of speakers">
+                        <div class="col-md-8">
                             {{speaker.firstname}} {{speaker.lastname}}
+                        </div>
+                        <div class="col-md-4" *ngIf="speaker.discourses">
+                            {{speaker.discourses[speaker.discourses.length-1]?.time | smartdate}}
+                        </div>
+                    </div>
+                </div>
+                <div class="list" *ngIf="isCurrent('favorites')">
+                    <div class="row speaker-search-results speaker" *ngFor="let speaker of favorites">
+                        <div class="col-md-8">
+                            {{speaker.firstname}} {{speaker.lastname}}
+                        </div>
+                        <div class="col-md-4" *ngIf="speaker.discourses">
+                            {{speaker.discourses[speaker.discourses.length-1]?.time | smartdate}}
+                        </div>
+                    </div>
+                </div>
+                <div class="list" *ngIf="isCurrent('debtors')">
+                    <div class="row speaker-search-results speaker" *ngFor="let speaker of debtors">
+                        <div class="col-md-8">
+                            {{speaker.firstname}} {{speaker.lastname}}
+                        </div>
+                        <div class="col-md-4" *ngIf="speaker.discourses">
+                            {{speaker.discourses[speaker.discourses.length-1]?.time | smartdate}}
                         </div>
                     </div>
                 </div>
             </div>
 
 
-            <div class="col-md-5" *ngIf="discourse">
+            <div class="col-md-5 col-sm-5" *ngIf="discourse">
                 <cg-discourse-history [discourse]="discourse"></cg-discourse-history>
             </div>
         </div>
