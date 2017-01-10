@@ -32,6 +32,7 @@ import {DatePipe} from "./core/pipes/date.pipe";
 import {SmartDatePipe} from "./core/pipes/smartDate.pipe";
 import {DiscourseCommentary} from "./congregation/modules/discourses/history/commentary.component";
 import {AssignComponent} from "./congregation/modules/discourses/assign.component";
+import {Ng2PaginationModule} from "ng2-pagination";
 
 const appRoutes: Routes = [
     { path: 'unauthorized', component: UnauthorizedComponent },
@@ -77,7 +78,8 @@ const appRoutes: Routes = [
         SpeakersRoutesModule,
         SpeechesRoutesModule,
         DiscoursesRoutesModule,
-        CongregationRoutesModule
+        CongregationRoutesModule,
+        Ng2PaginationModule
     ],
     bootstrap: [
         IndexComponent

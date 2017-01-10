@@ -32,6 +32,6 @@ class ProfileController extends Controller
      */
     public function show()
     {
-        return response()->json( Auth::user()->with(['congregation'])->first() );
+        return response()->json( User::where('id', Auth::id())->with(['congregation'])->first() );
     }
 }

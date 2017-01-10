@@ -11,8 +11,10 @@ import {Router} from "@angular/router";
     templateUrl: '/templates/congregation/speeches/speeches.html',
     providers: [ Title, SpeechService ]
 })
-export class SpeechesComponent {
+export class SpeechesComponent{
     speeches: Array<any>;
+    pages: Array  = [10, 20, 50, 100, 200];
+    itemsPerPage: number = 10;
 
     constructor(
         private title: Title,
