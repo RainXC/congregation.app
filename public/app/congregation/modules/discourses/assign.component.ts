@@ -31,6 +31,8 @@ export class AssignComponent implements OnDestroy, OnInit {
     public debtors: Array<any>;
     public favorites: Array<any>;
     public current: string;
+    public speakerSelected: any;
+    public speechSelected: any;
 
 
     constructor(
@@ -55,7 +57,7 @@ export class AssignComponent implements OnDestroy, OnInit {
     ngOnInit() {
         this.loadFavorites();
         this.loadDebtors();
-        this.setCurrent('favorites');
+        this.setCurrentList('favorites');
     }
 
     loadDiscourse( id ) {
@@ -98,7 +100,7 @@ export class AssignComponent implements OnDestroy, OnInit {
 
     reloadSpeakers() {
         if ( this.speakerName.length > 2 ) {
-            this.setCurrent('search');
+            this.setCurrentList('search');
             this.speakerService.search(this.speakerName).subscribe(response => {
                 this.speakers = response.json();
                 console.log(this.speakers);
@@ -132,16 +134,54 @@ export class AssignComponent implements OnDestroy, OnInit {
         });
     }
 
-    setCurrent( current: string ) {
+    setCurrentList( current: string ) {
         this.current = current;
     }
 
     setSearch() {
         if ( this.speakers )
-        this.setCurrent('search');
+        this.setCurrentList('search');
     }
 
-    isCurrent( current: string ) {
+    isCurrentList( current: string ) {
         return this.current == current;
+    }
+
+    setSpeakerSelected(speaker) {
+        this.speakerSelected = speaker;
+
+        return true;
+    }
+
+    setSpeechSelected(speech) {
+        this.speechSelected = speech;
+
+        return true;
+    }
+
+    returnToSpeakers() {
+        this.speakerSelected = null;
+
+        return true;
+    }
+
+    returnToSpeakerSelected() {
+        this.speechSelected = null;
+
+        return true;
+    }
+
+    createAssignment() {
+        this.discourseService.assign(this.id, this.speakerSelected.id, this.speechSelected.id).subscribe(response => {
+            this.back();
+        });
+
+        return true;
+    }
+
+    cancelAssignment() {
+        this.speechSelected = null;
+
+        return true;
     }
 }

@@ -13,7 +13,7 @@ import {Router} from "@angular/router";
 })
 export class SpeechesComponent{
     speeches: Array<any>;
-    pages: Array  = [10, 20, 50, 100, 200];
+    pages: Array<number>  = [10, 20, 50, 100, 200];
     itemsPerPage: number = 10;
 
     constructor(

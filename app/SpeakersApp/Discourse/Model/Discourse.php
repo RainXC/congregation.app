@@ -44,11 +44,16 @@ class Discourse extends Model
      */
     public function getAssignmentAttribute()
     {
+        return $this->getAssignment();
+    }
+
+    public function getAssignment()
+    {
         return DiscourseAssignment::whereIn('statusId', [ DiscourseAssignment::STATUS_CONFIRMED, DiscourseAssignment::STATUS_PRESET, DiscourseAssignment::STATUS_COMPLETED ])
-                                ->where('discourseId', $this->id)
-                                ->with(['speaker', 'speech', 'status'])
-                                ->orderBy('created_at', 'desc')
-                                ->first();
+            ->where('discourseId', $this->id)
+            ->with(['speaker', 'speech', 'status'])
+            ->orderBy('created_at', 'desc')
+            ->first();
     }
 
     public function getTimeDetailsAttribute()

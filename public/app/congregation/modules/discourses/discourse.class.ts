@@ -97,6 +97,12 @@ export class Discourse {
         });
     }
 
+    assign(speakerId: number, speechId: number) {
+        this.service.assign(this.data.id, speakerId, speechId).subscribe(response => {
+
+        });
+    }
+
     deleteComment(commentId) {
         this.service.deleteComment(this.getId(), commentId).subscribe(response => {
             this.service.reloadDiscourse('deleteCommentcd');

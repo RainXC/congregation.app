@@ -10,7 +10,7 @@ class SpeakerRepo
 
     public function __construct(  )
     {
-        $this->speakers = Speaker::with(['status', 'speeches', 'discourses']);
+        $this->speakers = Speaker::with(['status', 'speeches', 'discourses', 'congregation']);
     }
 
     public function filterByDebt()

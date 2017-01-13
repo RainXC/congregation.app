@@ -43,6 +43,15 @@ export class DiscourseService {
         return this.http.put(`${this.baseRoute}/assignments/${id}/cancel`, {});
     }
 
+    assign(id: number, speakerId: number, speechId: number) {
+        console.log(id, speakerId, speechId);
+        return this.http.put(`${this.baseRoute}/assignments/create`, {
+            discourseId: id,
+            speakerId: speakerId,
+            speechId: speechId
+        });
+    }
+
     deleteComment(id, commentId) {
         return this.http.delete(`${this.baseRoute}/${id}/log/${commentId}`);
     }

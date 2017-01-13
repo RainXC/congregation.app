@@ -28,7 +28,7 @@ class DiscourseAssignmentGenerator
         return $this->_commentaryGenerator;
     }
 
-    public function create( Speaker $speaker, Speech $speech, string $comment='' )
+    public function create( Speaker $speaker, Speech $speech, $comment='' )
     {
         $id = $this->_create($speaker, $speech);
         if ( $id && $comment ) {
@@ -39,8 +39,8 @@ class DiscourseAssignmentGenerator
 
     private function _cancelOldAssignment()
     {
-        if ( $this->getDiscourse()->assignment() ) {
-            $changer = new DiscourseAssignmentStatusChanger($this->getDiscourse()->assignment());
+        if ( $this->getDiscourse()->getAssignment() ) {
+            $changer = new DiscourseAssignmentStatusChanger($this->getDiscourse()->getAssignment());
             return $changer->toCanceled();
         }
         return true;

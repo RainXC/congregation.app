@@ -31,7 +31,7 @@ class SpeakerController extends Controller
      */
     public function index()
     {
-        $speakers = Speaker::with(['status', 'discourses', 'speeches']);
+        $speakers = Speaker::with(['status', 'discourses', 'speeches', 'congregation']);
         $value    = Input::get('search');
         if ($value) {
             $speakers->where('firstname', 'LIKE', '%'.$value.'%')

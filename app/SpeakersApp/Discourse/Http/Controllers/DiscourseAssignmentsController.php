@@ -11,14 +11,13 @@ use App\SpeakersApp\Discourse\Model\DiscourseAssignmentStatusChanger;
 use App\Http\Controllers\Controller;
 use App\SpeakersApp\Speaker\Model\Speaker;
 use App\SpeakersApp\Speech\Model\Speech;
-use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Request;
+use Symfony\Component\HttpFoundation\Request;
 
 class DiscourseAssignmentsController extends Controller
 {
     public function create(Request $request)
     {
-        $discourse  = Discourse::find(Input::get('discourseId'));
+        $discourse  = Discourse::find($request->input('discourseId'));
         $speaker    = Speaker::find($request->input('speakerId'));
         $speech     = Speech::find($request->input('speechId'));
         $generator  = new DiscourseAssignmentGenerator( $discourse );
