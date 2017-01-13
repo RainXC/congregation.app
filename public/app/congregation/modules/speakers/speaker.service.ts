@@ -9,4 +9,20 @@ export class SpeakerService {
     list() {
         return this.http.get('/api/speakers');
     }
+
+    search(search) {
+        return this.http.get('/api/speakers?search='+search);
+    }
+
+    favorites() {
+        return this.http.get('/api/speakers/favorites');
+    }
+
+    debtors() {
+        return this.http.get('/api/speakers/debtors');
+    }
+
+    long() {
+        return this.http.get('/api/speakers/long');
+    }
 }

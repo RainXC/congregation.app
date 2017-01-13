@@ -7,6 +7,12 @@
  */
 
 Route::group(['middleware' => 'web'], function () {
-    Route::resource('/api/discourses', 'DiscourseController');
+    Route::get('discourses/calendar', 'DiscourseController@calendar');
+    Route::put('discourses/assignments/{assignmentId}/confirm', 'DiscourseAssignmentsController@confirm');
+    Route::put('discourses/assignments/{assignmentId}/complete', 'DiscourseAssignmentsController@complete');
+    Route::put('discourses/assignments/{assignmentId}/cancel', 'DiscourseAssignmentsController@cancel');
+    Route::put('discourses/assignments/create', 'DiscourseAssignmentsController@create');
 
+    Route::resource('discourses/{discourseId}/log', 'DiscourseHistoryController');
+    Route::resource('discourses', 'DiscourseController');
 });

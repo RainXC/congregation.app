@@ -1,0 +1,150 @@
+<div id="app">
+    <cg-header></cg-header>
+
+    <div class="container discourse animated fadeIn">
+        <div class="page-header">
+            <div class="row">
+                <div class="col-md-7 col-sm-9 col-xs-12 text-left">
+                    <h1 class="pageHeading">
+                        {{discourse?.getTime() | date:'MMMM'}} <strong>{{discourse?.getTime() | date:'Do'}}</strong> {{discourse?.getTime() | date:'YYYY'}} at {{discourse?.getTime() | date:'HH:mm'}}
+                        <div class="visible-xs-inline-block mobile-buttons animated fadeIn animation-delay-10">
+                            <a (click)="back()" class="btn btn-default text-left">
+                                <i class="glyphicon glyphicon-menu-left"></i> Back
+                            </a>
+                            <a class="btn btn-primary" (click)="assign()">
+                                <i class="glyphicon glyphicon-pencil"></i>
+                            </a>
+                            <a (click)="discourse?.cancel()" *ngIf="discourse?.isAssigned()" class="btn btn-danger">
+                                <i class="glyphicon glyphicon-remove"></i>
+                            </a>
+                        </div>
+                    </h1>
+                </div>
+                <div class="col-md-5 col-sm-3 hidden-xs text-right">
+                    <div class="animated fadeIn animation-delay-10">
+                        <a (click)="back()" class="btn btn-default text-left">
+                            <i class="glyphicon glyphicon-menu-left"></i> <span class="hidden-xs hidden-sm">Back</span>
+                        </a>
+                        <a class="btn btn-primary" (click)="assign()">
+                            <i class="glyphicon glyphicon-pencil"></i> <span class="hidden-xs hidden-sm">Assign</span>
+                        </a>
+                        <a (click)="discourse?.cancel()" *ngIf="discourse?.isAssigned()" class="btn btn-danger">
+                            <i class="glyphicon glyphicon-remove"></i> <span class="hidden-xs hidden-sm">Cancel</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-7">
+                <div class="discourseContainer" *ngIf="discourse?.isAssigned()">
+                    <div class="row speech">
+                        <div class="col-md-12">
+                            <h2>{{discourse?.getSpeech().name}}</h2>
+                        </div>
+                    </div>
+                    <div class="row speaker">
+                        <div class="col-md-12">
+                            <h2>{{discourse?.getSpeaker().firstname}} {{discourse?.getSpeaker().lastname}}, <small>{{discourse?.getSpeaker().phone}}, {{discourse?.getSpeaker().congregation.name}}</small></h2>
+                        </div>
+                    </div>
+                    <div class="row controls">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <nav class="navbar navbar-default">
+                                <div class="container-fluid">
+                                    <p class="navbar-text status-{{discourse?.getAssignment().status.color}}">{{discourse?.getAssignment().status.name}}</p>
+                                    <p class="navbar-text"> {{discourse?.getAssignment().updated_at| smartdate}} </p>
+
+                                    <div class="animated pull-right fadeIn animation-delay-10 control-buttons">
+                                        <a class="btn btn-primary" (click)="discourse?.confirm()" *ngIf="!discourse?.isConfirmed() && discourse?.isPreset()">
+                                            <i class="glyphicon glyphicon-ok-circle"></i> <span>Confirm</span>
+                                        </a>
+                                        <a class="btn btn-success" (click)="discourse?.complete()" *ngIf="discourse?.isConfirmed() && !discourse?.isCompleted()">
+                                            <i class="glyphicon glyphicon-thumbs-up"></i> <span>Complete</span>
+                                        </a>
+                                    </div>
+                                </div><!-- /.container-fluid -->
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+                <div class="discourseContainer" *ngIf="!discourse?.isAssigned()">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h2 class="text-center">Not assigned</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12" *ngIf="discourse">
+                        <cg-discourse-commentary [discourse]="discourse"></cg-discourse-commentary>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 col-sm-6 col-xs-12" *ngIf="prevDisc">
+                        <button (click)="prev()" class="btn btn-default discourseNavigatorButton">
+                            <span class="date">
+                                {{prevDisc?.getTime() | date:'MMMM'}}
+                                <strong>{{prevDisc?.getTime() | date:'Do'}}</strong>
+                                {{prevDisc?.getTime() | date:'YYYY'}}
+                            </span>
+                            <span *ngIf="prevDisc?.isAssigned()">
+                                <h4 class="speech">
+                                    {{prevDisc?.getSpeech().name}}
+                                </h4>
+                                <h5 class="speaker">
+                                    {{prevDisc?.getSpeaker().firstname}} {{prevDisc?.getSpeaker().lastname}}
+                                </h5>
+                            </span>
+                            <span *ngIf="!prevDisc?.isAssigned()" class="notAssigned">
+                                <h4 class="speech">
+                                    Speech isn't assigned
+                                </h4>
+                                <h5 class="speaker">
+                                    Speaker isn't chosen
+                                </h5>
+                            </span>
+                        </button>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12" *ngIf="nextDisc">
+                        <button (click)="next()" class="btn btn-default discourseNavigatorButton">
+                            <span class="date">
+                                {{nextDisc?.getTime() | date:'MMMM'}}
+                                <strong>{{nextDisc?.getTime() | date:'Do'}}</strong>
+                                {{nextDisc?.getTime() | date:'YYYY'}}
+                            </span>
+                            <span *ngIf="nextDisc?.isAssigned()">
+                                <h4 class="speech">
+                                    {{nextDisc?.getSpeech().name}}
+                                </h4>
+                                <h5 class="speaker">
+                                    {{nextDisc?.getSpeaker().firstname}} {{nextDisc?.getSpeaker().lastname}}
+                                </h5>
+                            </span>
+                            <span *ngIf="!nextDisc?.isAssigned()" class="notAssigned">
+                                <h4 class="speech">
+                                    Speech isn't assigned
+                                </h4>
+                                <h5 class="speaker">
+                                    Speaker isn't chosen
+                                </h5>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-5" *ngIf="discourse">
+                <cg-discourse-history [discourse]="discourse"></cg-discourse-history>
+            </div>
+        </div>
+
+    </div>
+
+    <cg-footer></cg-footer>
+</div>

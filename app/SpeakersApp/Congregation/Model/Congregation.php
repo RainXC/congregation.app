@@ -37,7 +37,7 @@ class Congregation extends Model
      */
     public function getMeetingTime()
     {
-        return new Time($this->meetingTime);
+        return $this->meetingTime;
     }
 
     /**

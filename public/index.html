@@ -16,11 +16,16 @@
     <script>
         System.import('app').catch(function(err){ console.error(err); });
     </script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&amp;subset=cyrillic,cyrillic-ext,latin-ext" rel="stylesheet">
+
+    <link href="/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Core CSS -->
     <link href="/skins/stylish/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
     <link href="/skins/stylish/css/stylish-portfolio.css" rel="stylesheet">
+
+    <link href="/node_modules/animate.css/animate.min.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
     <link href="/skins/stylish/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -38,12 +43,14 @@
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
 
     <link rel="stylesheet" href="/css/custom.css">
+
+    <script src="node_modules/ng2-pagination/dist/ng2-pagination-bundle.js"></script>
 </head>
 <!-- 3. Display the application -->
 <body>
 <index-app>
     <div class="full-page-text">
-        <h1>Loading...</h1>
+        <h1 class="loading">Loading...</h1>
     </div>
 </index-app>
 

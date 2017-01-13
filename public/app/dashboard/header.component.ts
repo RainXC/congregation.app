@@ -9,6 +9,7 @@ import {UserService} from "../core/authorization/service/user.service";
 @Component({
     selector: 'cg-header',
     templateUrl: '/templates/dashboard/header.html',
+    styleUrls: ['css/header.css'],
     providers: [UserService]
 })
 export class HeaderComponent{

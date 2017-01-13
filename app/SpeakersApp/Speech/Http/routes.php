@@ -6,5 +6,5 @@
  * Time: 21:40
  */
 Route::group(['middleware' => 'web'], function () {
-    Route::resource('/api/speeches', 'SpeechController');
+    Route::resource('speeches', 'SpeechController');
 });

@@ -2,60 +2,86 @@
 
 namespace App\SpeakersApp\Discourse\Model;
 
-use App\Time\Day;
-use App\Time\Time;
+use App\SpeakersApp\Congregation\Model\Congregation;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Discourse extends Model
 {
+    /**
+     * Indicates whether attributes are snake cased on arrays.
+     *
+     * @var bool
+     */
+    public static $snakeAttributes = false;
 
-    public function assignments()
+    protected $dates = ['time', 'created_at', 'updated_at'];
+
+    /**
+     * @var array
+     */
+    protected $appends = ['assignment', 'timeDetails'];
+
+    /**
+     * @return HasMany
+     */
+    public function assignments() : HasMany
     {
         return $this->hasMany(DiscourseAssignment::class, 'discourseId', 'id')->orderBy('created_at', 'desc');
     }
 
+    /**
+     * @return mixed
+     */
     public function commentaries()
     {
         return $this->hasMany(DiscourseCommentary::class, 'discourseId', 'id')->orderBy('created_at', 'desc');
     }
 
-    public function assignment()
+    /**
+     * @return mixed
+     */
+    public function getAssignmentAttribute()
     {
-        return $this->assignments()->whereRaw('statusId IN ( '.DiscourseAssignment::STATUS_CONFIRMED.', '.DiscourseAssignment::STATUS_PRESET.', '.DiscourseAssignment::STATUS_COMPLETED.' )')->first();
+        return $this->getAssignment();
     }
 
-    public function congregation()
+    public function getAssignment()
+    {
+        return DiscourseAssignment::whereIn('statusId', [ DiscourseAssignment::STATUS_CONFIRMED, DiscourseAssignment::STATUS_PRESET, DiscourseAssignment::STATUS_COMPLETED ])
+            ->where('discourseId', $this->id)
+            ->with(['speaker', 'speech', 'status'])
+            ->orderBy('created_at', 'desc')
+            ->first();
+    }
+
+    public function getTimeDetailsAttribute()
+    {
+        return [
+            'date'   => $this->time->format('Y-m-d'),
+            'time'   => $this->time->format('H:i:s'),
+            'day'    => $this->time->day,
+            'month'  => $this->time->month,
+            'year'   => $this->time->year,
+            'hour'   => $this->time->hour,
+            'minute' => $this->time->minute,
+            'second' => $this->time->second,
+            'dayCaption' => $this->time->format('jS'),
+        ];
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function congregation() : HasOne
     {
         return $this->hasOne(Congregation::class, 'id', 'congregationId');
     }
 
-    public function getDay()
-    {
-        return Day::parseDayFromYMDHis($this->time);
-    }
-
-    public function getTime()
-    {
-        return Time::parseTimeFromYMDHis($this->time);
-    }
-
-    public function setSpeech($id)
-    {
-        $this->speechId = $id;
-        return $this->save();
-    }
-
-    public function setSpeaker($id)
-    {
-        $this->speakerId = $id;
-        return $this->save();
-    }
-
-    public function isPast()
-    {
-        return ($this->getDay()->getTimestamp() < time());
-    }
-
+    /**
+     * @return Discourse
+     */
     public function nextDate()
     {
         $discourses = new Discourse();
@@ -66,6 +92,9 @@ class Discourse extends Model
                           ->first();
     }
 
+    /**
+     * @return Discourse
+     */
     public function prevDate()
     {
         $discourses = new Discourse();

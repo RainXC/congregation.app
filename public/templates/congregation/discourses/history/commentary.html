@@ -1,0 +1,17 @@
+<div class="form">
+    <form [formGroup]="commentaryForm" (ngSubmit)="store($event)" novalidate>
+        <div class="form-group {{!commentaryForm.controls.text.valid && submitted?'has-error':''}}">
+            <textarea
+                id="message"
+                formControlName="text"
+                class="form-control commentary"
+                [(ngModel)]="data.text"
+                placeholder="{{!commentaryForm.controls.text.valid && submitted?'Please enter the message':'Message'}}"
+            ></textarea>
+        </div>
+        <button type="submit" style="width: 100%;" class="btn btn-{{ stored ? 'success' : 'primary' }} responsive-btn">
+            {{ stored ? 'Stored' : 'Store' }}
+
+        </button>
+    </form>
+</div>

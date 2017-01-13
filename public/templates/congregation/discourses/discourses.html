@@ -1,0 +1,56 @@
+<div id="app">
+    <cg-header></cg-header>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Discourses schedule</h1>
+
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Date</th>
+                            <th>Speaker</th>
+                            <th>Speech</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let discourse of discourses; let isEven = even; let $index = index;">
+                            <td>{{$index+1}}</td>
+                            <td>
+                                {{discourse.time}}
+                            </td>
+                            <td>
+                                <div class="speaker" *ngIf="discourse.assignment">
+                                    {{discourse.assignment?.speaker.firstname}} {{discourse.assignment?.speaker.lastname}}
+                                    <div class="additional">
+                                        Last discourse <strong>12-04-2016 10:00</strong>
+                                    </div>
+                                </div>
+
+                                <div class="notAssigned" *ngIf="!discourse.assignment">
+                                    Speaker is not assigned yet
+                                </div>
+                            </td>
+                            <td>
+                                <div class="speech" *ngIf="discourse.assignment">
+                                    {{discourse.assignment?.speech.name}}
+                                    <div class="additional">
+                                        Last discourse <strong>10-06-2016 13:00</strong>
+                                    </div>
+                                </div>
+
+                                <div class="notAssigned" *ngIf="!discourse.assignment">
+                                    Speech is not assigned yet
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

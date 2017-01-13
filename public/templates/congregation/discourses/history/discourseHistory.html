@@ -1,0 +1,25 @@
+<div class="row discourseHistory">
+    <div class="col-md-12">
+        <div class="page-header">
+            <h2>History</h2>
+        </div>
+        <p *ngIf="history?.length==0" class="text-center">
+            <small>No records</small>
+        </p>
+
+        <ul class="timeline" *ngIf="history?.length>0">
+            <li *ngFor="let comment of history">
+                <div class="timeline-badge default"><i class="glyphicon glyphicon-info-sign"></i></div>
+                <div class="timeline-panel">
+                    <div class="timeline-heading text-left">
+                        <a (click)="discourse?.deleteComment(comment.id)" class="btn btn-danger btn-xs">delete</a>
+                        <small class="text-muted"><i class="glyphicon glyphicon-time"></i> {{comment.created_at | smartdate}}</small>
+                    </div>
+                    <div class="timeline-body">
+                        <p>{{comment.comment}}</p>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

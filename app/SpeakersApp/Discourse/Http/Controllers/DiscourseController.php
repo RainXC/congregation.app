@@ -3,9 +3,11 @@
 namespace App\SpeakersApp\Discourse\Http\Controllers;
 
 use App\SpeakersApp\Discourse\Model\Discourse;
+use App\SpeakersApp\Discourse\View\DiscourseCalendar;
+use App\SpeakersApp\Discourse\View\DiscourseDetails;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
@@ -13,13 +15,11 @@ use Illuminate\Support\Facades\Input;
 class DiscourseController extends Controller
 {
     /**
-     * Create a new controller instance.
-     *
-     * @return void
+     * DiscourseController constructor.
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('apiAuth');
     }
 
     /**
@@ -30,7 +30,39 @@ class DiscourseController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $discourses = Discourse::where('congregationId', '=', $user->congregationId)->orderBy('time', 'asc')->paginate(10);
+        $discourses = Discourse::where('congregationId', $user->congregation_id)
+                                ->with(['congregation', 'assignments', 'commentaries'])
+                                ->whereDate( 'time', '>', Carbon::today()->addDay(-1)->toDateTimeString() )
+                                ->orderBy('time', 'asc')->get();
+
+        return response()->json($discourses);
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function calendar()
+    {
+        $user = Auth::user();
+        $discourses = Discourse::where('congregationId', $user->congregation_id)
+            ->with(['congregation', 'assignments', 'commentaries'])
+            ->whereDate( 'time', '>', Carbon::today()->addDay(-1)->toDateTimeString() )
+            ->orderBy('time', 'asc')->get();
+
+        $view = new DiscourseCalendar($discourses);
+
+        return response()->json($view);
+    }
+
+    public function history()
+    {
+        $user = Auth::user();
+        $discourses = Discourse::where('congregationId', $user->congregation_id)
+                                ->with(['congregation', 'assignments', 'commentaries'])
+                                ->whereDate( 'time', '<=', Carbon::today()
+                                ->toDateTimeString() )
+                                ->orderBy('time', 'desc')
+                                ->paginate(10);
 
         return response()->json($discourses);
     }
@@ -67,10 +99,9 @@ class DiscourseController extends Controller
      */
     public function show($id)
     {
-        $discourses    = new Discourse();
-        $discourse       = $discourses->findOrFail($id);
+        $discourse = Discourse::with(['congregation', 'assignments', 'commentaries'])->findOrFail($id);
 
-        return response()->json($discourse);
+        return response()->json(new DiscourseDetails($discourse));
     }
 
     /**

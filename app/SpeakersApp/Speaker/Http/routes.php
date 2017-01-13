@@ -6,5 +6,8 @@
  * Time: 21:40
  */
 Route::group(['middleware' => 'web'], function () {
+    Route::get('speakers/debtors', 'SpeakerController@debtors');
+    Route::get('speakers/favorites', 'SpeakerController@favorites');
+
     Route::resource('speakers', 'SpeakerController');
 });

@@ -12,26 +12,26 @@
             </button>
 
             <!-- Branding Image -->
-            <a class="navbar-brand" href="/dashboard">
-                Congregation App
+            <a class="navbar-brand" routerLink="/">
+                Congregation<span>.app</span>
             </a>
         </div>
 
         <div class="collapse navbar-collapse" id="app-navbar-collapse">
             <!-- Left Side Of Navbar -->
             <ul class="nav navbar-nav">
-                <li routerLinkActive="discourses">
-                    <a routerLink="/discourses">
+                <li>
+                    <a routerLink="/discourses" routerLinkActive="active">
                         Discourses
                     </a>
                 </li>
-                <li routerLinkActive="speakers">
-                    <a routerLink="/speakers">
+                <li>
+                    <a routerLink="/speakers" routerLinkActive="active">
                         Speakers
                     </a>
                 </li>
-                <li routerLinkActive="speeches">
-                    <a routerLink="/speeches">
+                <li>
+                    <a routerLink="/speeches" routerLinkActive="active">
                         Speeches
                     </a>
                 </li>

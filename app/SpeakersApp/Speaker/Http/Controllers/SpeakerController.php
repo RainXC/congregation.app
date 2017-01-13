@@ -3,6 +3,7 @@
 namespace App\SpeakersApp\Speaker\Http\Controllers;
 
 use App\SpeakersApp\Speaker\Model\Speaker;
+use App\SpeakersApp\Speaker\Repository\SpeakerRepo;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -30,7 +31,29 @@ class SpeakerController extends Controller
      */
     public function index()
     {
-        $speakers = Speaker::with(['status'])->get();
+        $speakers = Speaker::with(['status', 'discourses', 'speeches', 'congregation']);
+        $value    = Input::get('search');
+        if ($value) {
+            $speakers->where('firstname', 'LIKE', '%'.$value.'%')
+                ->orWhere('lastname', 'LIKE', '%'.$value.'%')
+                ->orWhere('patronymic', 'LIKE', '%'.$value.'%')
+                ->orWhere('code', 'LIKE', '%'.$value.'%');
+        }
+
+        return response()->json($speakers->get());
+    }
+
+    public function favorites()
+    {
+        $repo = new SpeakerRepo();
+        $speakers = $repo->filterByFavorite()->get();
+        return response()->json($speakers);
+    }
+
+    public function debtors()
+    {
+        $repo = new SpeakerRepo();
+        $speakers = $repo->filterByDebt()->get();
 
         return response()->json($speakers);
     }

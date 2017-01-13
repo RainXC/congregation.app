@@ -1,0 +1,51 @@
+<div id="app">
+    <cg-header></cg-header>
+
+    <div class="container animated fadeIn">
+        <div class="page-header animated fadeIn animation-delay-3">
+            <h1>Speeches</h1>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Code</th>
+                                <th>Name</th>
+                                <th>Nearest discourse</th>
+                            </tr>
+                        </thead>
+
+                        <tr
+                            *ngFor="let speech of speeches| paginate: { itemsPerPage: itemsPerPage, currentPage: p };
+                            let isEven = even;
+                            let $index = index;"
+                        >
+                            <td>{{$index+1}}</td>
+                            <td>№ {{speech.code}}-U</td>
+                            <td>
+                                {{speech.name}}
+                                <div class="additional">
+                                    Created at: {{speech.created_at}} <br>
+                                    Updated at: {{speech.updated_at}}
+                                </div>
+                            </td>
+                            <td>{{speech.nearestDiscourse?'':'Not specified'}}</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <pagination-controls (pageChange)="p = $event" class="adminPagination"></pagination-controls>
+                <select class="form-control itemsPerPage" [(ngModel)]="itemsPerPage">
+                    <option *ngFor="let page of pages">{{page}}</option>
+                </select>
+
+            </div>
+        </div>
+    </div>
+
+    <cg-footer></cg-footer>
+</div>

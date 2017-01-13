@@ -1,0 +1,128 @@
+<div id="app">
+    <cg-header></cg-header>
+
+    <div class="container discourse animated fadeIn">
+        <div class="row">
+            <div class="page-header">
+                <div class="row">
+                    <div class="col-md-7 col-sm-9 col-xs-12 text-left">
+                        <h1 class="pageHeading">
+                            {{discourse?.getTime() | date:'MMMM'}} <strong>{{discourse?.getTime() | date:'Do'}}</strong> {{discourse?.getTime() | date:'YYYY'}} at {{discourse?.getTime() | date:'HH:mm'}}
+                            <div class="visible-xs-inline-block mobile-buttons animated fadeInDown animation-delay-10">
+                                <a (click)="back()" class="btn btn-default text-left">
+                                    <i class="glyphicon glyphicon-menu-left"></i> Back
+                                </a>
+                            </div>
+                        </h1>
+                    </div>
+                    <div class="col-md-5 col-sm-3 hidden-xs text-right">
+                        <div class="animated fadeIn animation-delay-10">
+                            <a (click)="back()" class="btn btn-default text-left">
+                                <i class="glyphicon glyphicon-menu-left"></i> <span class="hidden-xs hidden-sm">Back</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-7 col-sm-7">
+                <div class="speakers" *ngIf="!speakerSelected">
+                    <div class="speaker-search">
+                        <div class="row">
+                            <div class="col-md-12 col-xs-12">
+                                <button class="btn btn-primary" (click)="setCurrentList('favorites')">Favorites</button>
+                                <button class="btn btn-success" (click)="setCurrentList('debtors')">Debtors</button>
+                                <input type="text" class="form-control speaker-search-input" (click)="setSearch()" [(ngModel)]="speakerName" placeholder="Search by speakers's name" (ngModelChange)="reloadSpeakers()">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="found" *ngIf="isCurrentList('search')">
+                        <div class="row speaker-search-results speaker" *ngFor="let speaker of speakers" (click)="setSpeakerSelected(speaker)">
+                            <div class="col-md-8 col-xs-8">
+                                {{speaker.firstname}} {{speaker.lastname}}
+                            </div>
+                            <div class="col-md-4 col-xs-4" *ngIf="speaker.discourses">
+                                {{speaker.discourses[speaker.discourses.length-1]?.time | smartdate}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list" *ngIf="isCurrentList('favorites')">
+                        <div class="row speaker-search-results speaker" *ngFor="let speaker of favorites" (click)="setSpeakerSelected(speaker)">
+                            <div class="col-md-8 col-xs-8">
+                                {{speaker.firstname}} {{speaker.lastname}}
+                            </div>
+                            <div class="col-md-4 col-xs-4" *ngIf="speaker.discourses">
+                                {{speaker.discourses[speaker.discourses.length-1]?.time | smartdate}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list" *ngIf="isCurrentList('debtors')">
+                        <div class="row speaker-search-results speaker" *ngFor="let speaker of debtors" (click)="setSpeakerSelected(speaker)">
+                            <div class="col-md-8 col-xs-8">
+                                {{speaker.firstname}} {{speaker.lastname}}
+                            </div>
+                            <div class="col-md-4 col-xs-4" *ngIf="speaker.discourses">
+                                {{speaker.discourses[speaker.discourses.length-1]?.time | smartdate}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="speeches" *ngIf="speakerSelected && !speechSelected">
+                    <div class="speaker-search">
+                        <div class="row">
+                            <div class="col-md-12 col-xs-12">
+                                <button class="btn btn-default" (click)="returnToSpeakers()">Return</button>
+                                <div class="speaker-search-input speaker-selected">
+                                    {{speakerSelected.firstname}} {{speakerSelected.lastname}}, <small>{{speakerSelected.phone}}, {{speakerSelected.congregation.name}}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list">
+                        <div class="row speaker-search-results speaker" *ngFor="let speech of speakerSelected.speeches" (click)="setSpeechSelected(speech)">
+                            <div class="col-md-12">
+                                {{speech.name}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="summary" *ngIf="speakerSelected && speechSelected">
+                    <div class="speaker-search">
+                        <div class="row">
+                            <div class="col-md-9 col-xs-9">
+                                <button class="btn btn-default" (click)="cancelAssignment()">Return</button>
+                                <button class="btn btn-success" (click)="createAssignment()">
+                                    <i class="glyphicon glyphicon-ok-circle"></i> <span>Assign</span>
+                                </button>
+                            </div>
+                            <div class="col-md-3 col-xs-3 speaker-last-discourse">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row speech">
+                        <div class="col-md-12">
+                            <h2>{{speechSelected.name}}</h2>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h2>{{speakerSelected.firstname}} {{speakerSelected.lastname}}, <small>{{speakerSelected.phone}}, {{speakerSelected.congregation.name}}</small></h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-5 col-sm-5" *ngIf="discourse">
+                <cg-discourse-history [discourse]="discourse"></cg-discourse-history>
+            </div>
+        </div>
+
+    </div>
+
+    <cg-footer></cg-footer>
+</div>

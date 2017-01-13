@@ -5,7 +5,6 @@ import {Router} from "@angular/router";
 import {UserService} from "../service/user.service";
 
 class User {
-    _token: string;
     username: string;
     password: string;
 }

@@ -1,0 +1,50 @@
+<div id="app">
+    <cg-header></cg-header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1 id="timeline">Discourses schedule for {{user.profile?.congregation.name}}</h1>
+        </div>
+
+        <div class="years" *ngFor="let year of years;">
+            <h1>{{year.name}}</h1>
+
+            <div class="months" *ngFor="let month of year.months">
+                <h3>{{month.name}}</h3>
+                <ul class="timeline">
+                    <li *ngFor="let discourse of month.discourses;"
+                        class="{{!discourse.assignment?'notAssigned':''}}">
+                        <div class="timeline-badge default">
+                            {{discourse.timeDetails.dayCaption}}
+                        </div>
+                        <div class="timeline-panel">
+                            <div class="row">
+                                <div class="col-md-12" *ngIf="discourse.assignment">
+                                    <small style="float: right;" class="text-muted"><i class="glyphicon glyphicon-time"></i>
+                                        {{discourse.updated_at}}
+                                    </small>
+                                    <h4>
+                                        {{discourse.assignment?.speaker.firstname}}
+                                        {{discourse.assignment?.speaker.lastname}}
+                                    </h4>
+                                    <h5>
+                                        {{discourse.assignment?.speech.name}}
+                                    </h5>
+                                    <div class="timeline-footer text-right">
+                                        <button class="btn btn-primary btn-sm">Details</button>
+                                        <button class="btn btn-danger btn-sm">Cancel</button>
+                                    </div>
+                                </div>
+                                <div class="col-md-12" *ngIf="!discourse.assignment">
+                                    <h1 class="notAssignedLabel">You can assign a speaker, whatever you want</h1>
+                                    <button class="btn btn-default">Assign</button>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</div>

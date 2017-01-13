@@ -1,0 +1,52 @@
+<div id="app">
+    <cg-header></cg-header>
+
+    <div class="container animated fadeIn">
+        <div class="page-header animated fadeIn animation-delay-3">
+            <h1 class="calendarHeading">Discourses schedule for {{user.profile?.congregation.name}}</h1>
+        </div>
+
+        <div class="row years" *ngFor="let year of years;">
+            <div class="col-md-12">
+                <div class="months animated fadeIn animation-delay-5" *ngFor="let month of year.months; let $index = index;">
+                    <div class="row">
+                        <h3 class="monthName">{{month.name}} <span>{{month.year}}</span></h3>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 col-sm-6 {{!discourse.assignment?'notAssigned':''}} days" *ngFor="let discourse of month.discourses;" [routerLink]="['/discourses', discourse.id]">
+                            <div class="dayNumber">
+                                {{discourse.timeDetails.day}}
+                            </div>
+                            <div class="dayControls">
+                                <div class="btn-group btn-group-xs" role="group" aria-label="...">
+                                    <button class="btn btn-default btn-xs" [routerLink]="['/discourses', discourse.id]" >Details</button>
+                                </div>
+                                <span class="label label-warning" *ngIf="!discourse.assignment"> Not assigned </span>
+                                <span class="label label-{{discourse.assignment.status.color}}" *ngIf="discourse.assignment"> {{discourse.assignment.status.name}} </span>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12" *ngIf="discourse.assignment">
+                                    <h4>
+                                        {{discourse.assignment?.speaker.firstname}}
+                                        {{discourse.assignment?.speaker.lastname}}
+                                    </h4>
+                                    <h5>
+                                        {{discourse.assignment?.speech.name}}
+                                    </h5>
+                                </div>
+                                <div class="col-md-12" *ngIf="!discourse.assignment">
+                                    <h1 class="notAssignedLabel">You can assign a speaker, whatever you want</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <cg-footer></cg-footer>
+</div>
