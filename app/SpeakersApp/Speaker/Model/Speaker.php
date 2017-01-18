@@ -4,15 +4,43 @@ namespace App\SpeakersApp\Speaker\Model;
 
 use App\SpeakersApp\Congregation\Model\Congregation;
 use App\SpeakersApp\Discourse\Model\Discourse;
+use App\SpeakersApp\Discourse\Model\DiscourseAssignment;
 use App\SpeakersApp\Speech\Model\Speech;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Speaker extends Model
 {
     /**
+     * Indicates whether attributes are snake cased on arrays.
+     *
+     * @var bool
+     */
+    public static $snakeAttributes = false;
+
+    /**
      * @var string
      */
     protected $table = 'speakers';
+
+    /**
+     * @var Carbon
+     */
+    private $currentTime;
+
+    protected $dates = ['created_at', 'updated_at'];
+
+    /**
+     * Speaker constructor.
+     *
+     * @param array $attributes
+     */
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->setCurrentTime(Carbon::now());
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
@@ -128,5 +156,95 @@ class Speaker extends Model
     public function __toString()
     {
         return $this->getName().' ['.$this->getCode().']';
+    }
+
+    /**
+     * @param Carbon $time
+     *
+     * @return $this
+     */
+    public function setCurrentTime(Carbon $time)
+    {
+        $this->currentTime = $time;
+        return $this;
+    }
+
+    /**
+     * @return Carbon
+     */
+    public function getCurrentTime()
+    {
+        return $this->currentTime;
+    }
+
+    /**
+     * @return Discourse|array
+     */
+    public function getNearestDiscourse()
+    {
+        $prevDisc = $this->getPrevDiscourse();
+        $nextDisc = $this->getNextDiscourse();
+
+        if ( $prevDisc && $nextDisc) {
+            return ( $prevDisc->time->diffInHours($this->getCurrentTime()) <= $nextDisc->time->diffInHours($this->getCurrentTime()) )
+                ? $prevDisc
+                : $nextDisc;
+        }
+
+        if ( $prevDisc ) {
+            return $prevDisc;
+        }
+
+        if ( $nextDisc ) {
+            return $nextDisc;
+        }
+
+        return null;
+    }
+
+    /**
+     * @return Discourse|array
+     */
+    public function getNextDiscourse()
+    {
+        $speakerId      = $this->id;
+        // TODO: Remove congregationId from system
+        $congregationId = Auth::user()->congregation_id;
+
+        $discourse = Discourse::where('congregationId', $congregationId)
+            ->whereDate('time', '>=', $this->getCurrentTime()->toDateString())
+            ->whereHas('assignments', function ($builder) use($speakerId) {
+                $builder->where('speakerId', $speakerId)
+                    ->whereIn('statusId', [
+                        DiscourseAssignment::STATUS_COMPLETED,
+                        DiscourseAssignment::STATUS_CONFIRMED,
+                        DiscourseAssignment::STATUS_PRESET
+                    ]);
+            })->orderBy('id', 'asc')->first();
+
+        return $discourse;
+    }
+
+    /**
+     * @return Discourse|array
+     */
+    public function getPrevDiscourse()
+    {
+        $speakerId      = $this->id;
+        // TODO: Remove congregationId from system
+        $congregationId = Auth::user()->congregation_id;
+
+        $discourse = Discourse::where('congregationId', $congregationId)
+            ->whereDate('time', '<=', $this->getCurrentTime()->toDateString())
+            ->whereHas('assignments', function ($builder) use($speakerId) {
+                $builder->where('speakerId', $speakerId)
+                    ->whereIn('statusId', [
+                        DiscourseAssignment::STATUS_COMPLETED,
+                        DiscourseAssignment::STATUS_CONFIRMED,
+                        DiscourseAssignment::STATUS_PRESET
+                    ]);
+            })->orderBy('id', 'desc')->first();
+
+        return $discourse;
     }
 }

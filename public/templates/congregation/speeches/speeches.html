@@ -1,4 +1,5 @@
 <div id="app">
+    <ng2-slim-loading-bar></ng2-slim-loading-bar>
     <cg-header></cg-header>
 
     <div class="container animated fadeIn">
@@ -8,7 +9,11 @@
 
         <div class="row">
             <div class="col-md-12">
-                <div class="table-responsive">
+                <div class="full-page-loading" *ngIf="!speeches">
+                    <h1 class="loading">Loading...</h1>
+                </div>
+
+                <div class="table-responsive" *ngIf="speeches">
                     <table class="table">
                         <thead>
                             <tr>
@@ -25,23 +30,31 @@
                             let $index = index;"
                         >
                             <td>{{$index+1}}</td>
-                            <td>№ {{speech.code}}-U</td>
+                            <td>№ {{speech.speech.code}}-U</td>
                             <td>
-                                {{speech.name}}
+                                {{speech.speech.name}}
                                 <div class="additional">
-                                    Created at: {{speech.created_at}} <br>
-                                    Updated at: {{speech.updated_at}}
+                                    Created at: {{speech.speech.created_at}} <br>
+                                    Updated at: {{speech.speech.updated_at}}
                                 </div>
                             </td>
-                            <td>{{speech.nearestDiscourse?'':'Not specified'}}</td>
+                            <td *ngIf="speech.nearestDiscourse">
+                                {{speech.nearestDiscourse.time | fromNow}}
+                                <div class="additional">
+                                    {{speech.nearestDiscourse.assignment.speaker.firstname}} {{speech.nearestDiscourse.assignment.speaker.lastname}} {{speech.nearestDiscourse.time | date}}
+                                </div>
+                            </td>
+                            <td *ngIf="!speech.nearestDiscourse">Not available</td>
                         </tr>
                     </table>
                 </div>
 
-                <pagination-controls (pageChange)="p = $event" class="adminPagination"></pagination-controls>
-                <select class="form-control itemsPerPage" [(ngModel)]="itemsPerPage">
-                    <option *ngFor="let page of pages">{{page}}</option>
-                </select>
+                <div *ngIf="speeches">
+                    <pagination-controls (pageChange)="p = $event" class="adminPagination"></pagination-controls>
+                    <select class="form-control itemsPerPage" [(ngModel)]="itemsPerPage">
+                        <option *ngFor="let page of pages">{{page}}</option>
+                    </select>
+                </div>
 
             </div>
         </div>

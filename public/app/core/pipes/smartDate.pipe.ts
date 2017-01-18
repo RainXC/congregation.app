@@ -3,30 +3,46 @@ import * as moment from 'moment/moment';
 
 @Pipe({ name: 'smartdate' })
 export class SmartDatePipe implements PipeTransform {
+    private value: any;
 
-    transform(value: any): string {
+    transform(value: any, currentTime: any): string {
         if (value === undefined || value === null) return null;
+        this.value = moment(value);
 
-        let date = moment(value);
-        if ( this.isWeekDiff(date) ) {
-            return date.fromNow();
+        if (currentTime === undefined || currentTime === null)
+            currentTime = moment();
+        else
+            currentTime = moment(currentTime);
+
+        let diff = this.value.diff( currentTime, 'days' ) ;
+        if (diff < 0) {
+            diff *= -1;
         }
-        if ( this.isDaysDiff(date, 14) ) {
-            return date.calendar();
+
+
+        if ( diff <= 15 ) {
+            if ( diff <= 1 ) {
+                return this.value.calendar(currentTime, {
+                    sameDay: '[Today]',
+                });
+            }
+            if ( diff == 7 ) {
+                if ( this.value.isBefore(currentTime) ) {
+                    return `Last ${this.value.format('dddd')}`;
+                } else {
+                    return `Next ${this.value.format('dddd')}`;
+                }
+            }
+            return this.value.from(currentTime);
         }
 
-        return date.format('DD.MM.YYYY HH:mm:ss');
-    }
-
-    isWeekDiff( date ) {
-        return this.isDaysDiff(date, 7);
-    }
-
-    isMonthDiff( date ) {
-        return this.isDaysDiff(date, 30);
-    }
-
-    isDaysDiff( date, days ) {
-        return moment().diff(date, 'days') <= days;
+        return this.value.calendar(currentTime, {
+            sameDay: '[Today]',
+            nextDay: '[Tomorrow]',
+            nextWeek: 'dddd',
+            lastDay: '[Yesterday]',
+            lastWeek: '[Last] dddd',
+            sameElse: 'DD.MM.YYYY'
+        });
     }
 }

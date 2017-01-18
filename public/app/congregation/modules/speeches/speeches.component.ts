@@ -5,6 +5,7 @@ import {Component} from '@angular/core';
 import {Title} from "@angular/platform-browser";
 import {SpeechService} from "./speech.service";
 import {Router} from "@angular/router";
+import {SlimLoadingBarService} from 'ng2-slim-loading-bar';
 
 @Component({
     selector: 'cg-speeches',
@@ -19,9 +20,11 @@ export class SpeechesComponent{
     constructor(
         private title: Title,
         private speechService: SpeechService,
-        private router: Router
+        private router: Router,
+        private slimLoadingBar: SlimLoadingBarService
     ) {
         title.setTitle('Congregation App. Speeches list');
+        this.slimLoadingBar.start();
         this.loadSpeeches();
     }
 
@@ -29,11 +32,12 @@ export class SpeechesComponent{
         this.speechService
             .list()
             .subscribe(response => {
-            this.speeches = response.json();
-        }, response => {
-            if ( response.status == 401 ) {
-                this.router.navigate(['unauthorized']);
-            }
-        });
+                this.speeches = response.json();
+                this.slimLoadingBar.complete();
+            }, response => {
+                if ( response.status == 401 ) {
+                    this.router.navigate(['unauthorized']);
+                }
+            });
     }
 }

@@ -55,8 +55,6 @@ export class AssignComponent implements OnDestroy, OnInit {
     }
 
     ngOnInit() {
-        this.loadFavorites();
-        this.loadDebtors();
         this.setCurrentList('favorites');
     }
 
@@ -74,6 +72,8 @@ export class AssignComponent implements OnDestroy, OnInit {
                 if ( result.next ) {
                     this.nextDisc  = new Discourse(result.next, this.discourseService);
                 }
+                this.loadFavorites();
+                this.loadDebtors();
 
             }, response => {
                 if ( response.status == 401 ) {
@@ -115,7 +115,7 @@ export class AssignComponent implements OnDestroy, OnInit {
     }
 
     loadDebtors() {
-        this.speakerService.debtors().subscribe(response => {
+        this.speakerService.debtors(this.discourse.getTime()).subscribe(response => {
             this.debtors = response.json();
         }, response => {
             if ( response.status == 401 ) {
@@ -125,7 +125,7 @@ export class AssignComponent implements OnDestroy, OnInit {
     }
 
     loadFavorites() {
-        this.speakerService.favorites().subscribe(response => {
+        this.speakerService.favorites(this.discourse.getTime()).subscribe(response => {
             this.favorites = response.json();
         }, response => {
             if ( response.status == 401 ) {

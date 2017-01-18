@@ -1,4 +1,5 @@
 <div id="app">
+    <ng2-slim-loading-bar></ng2-slim-loading-bar>
     <cg-header></cg-header>
 
     <div class="container animated fadeIn">
@@ -8,14 +9,17 @@
 
         <div class="row">
             <div class="col-md-12">
-                <div class="table-responsive">
+                <div class="full-page-loading" *ngIf="!speakers">
+                    <h1 class="loading">Loading...</h1>
+                </div>
+
+                <div class="table-responsive" *ngIf="speakers">
                     <table class="table">
                         <thead>
                         <tr>
                             <th>#</th>
                             <th>Name</th>
                             <th>Mobile</th>
-                            <th>Status</th>
                             <th>Nearest discourse</th>
                         </tr>
                         </thead>
@@ -23,15 +27,25 @@
                         <tr *ngFor="let speaker of speakers; let isEven = even; let $index = index;">
                             <td>{{$index+1}}</td>
                             <td>
-                                {{speaker.firstname}} {{speaker.lastname}}
+                                {{speaker.speaker.firstname}} {{speaker.speaker.lastname}}
                                 <div class="additional">
-                                    Created at: {{speaker.created_at}} <br>
-                                    Updated at: {{speaker.updated_at}}
+                                    Created at: {{speaker.speaker.created_at}} <br>
+                                    Updated at: {{speaker.speaker.updated_at}}
                                 </div>
                             </td>
-                            <td>{{speaker.phone}}</td>
-                            <td [style.color]="speaker.status.color">{{speaker.status.name}}</td>
-                            <td>{{speaker.nearestDiscourse?'':'Not specified'}}</td>
+                            <td>
+                                {{speaker.speaker.phone}}
+                                <div class="additional">
+                                    <span [style.color]="speaker.speaker.status.color">{{speaker.speaker.status.name}}</span>
+                                </div>
+                            </td>
+                            <td *ngIf="speaker.nearestDiscourse">
+                                {{speaker.nearestDiscourse.time | fromNow}}
+                                <div class="additional">
+                                    {{speaker.nearestDiscourse.assignment.speech.name}} {{speaker.nearestDiscourse.time | date}}
+                                </div>
+                            </td>
+                            <td *ngIf="!speaker.nearestDiscourse">Not available</td>
                         </tr>
                     </table>
                 </div>

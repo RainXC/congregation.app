@@ -33,6 +33,9 @@ import {SmartDatePipe} from "./core/pipes/smartDate.pipe";
 import {DiscourseCommentary} from "./congregation/modules/discourses/history/commentary.component";
 import {AssignComponent} from "./congregation/modules/discourses/assign.component";
 import {Ng2PaginationModule} from "ng2-pagination";
+import {SlimLoadingBarModule} from 'ng2-slim-loading-bar';
+import {DndModule} from 'ng2-dnd';
+import {ToastyModule} from 'ng2-toasty';
 
 const appRoutes: Routes = [
     { path: 'unauthorized', component: UnauthorizedComponent },
@@ -79,7 +82,10 @@ const appRoutes: Routes = [
         SpeechesRoutesModule,
         DiscoursesRoutesModule,
         CongregationRoutesModule,
-        Ng2PaginationModule
+        Ng2PaginationModule,
+        ToastyModule.forRoot(),
+        DndModule.forRoot(),
+        SlimLoadingBarModule.forRoot()
     ],
     bootstrap: [
         IndexComponent

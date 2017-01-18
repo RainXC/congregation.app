@@ -27,6 +27,6 @@ class SpeakerRepo
 
     public function get()
     {
-        return $this->speakers->get();
+        return $this->speakers;
     }
 }

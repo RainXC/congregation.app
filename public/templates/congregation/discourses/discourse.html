@@ -71,9 +71,14 @@
                     </div>
                 </div>
                 <div class="discourseContainer" *ngIf="!discourse?.isAssigned()">
-                    <div class="row">
+                    <div class="row" (click)="assign()">
                         <div class="col-md-12">
-                            <h2 class="text-center">Not assigned</h2>
+                            <div class="assign-from-content">
+                                <h2 class="text-center">Not assigned</h2>
+                                <p class="text-info text-center">
+                                    Please click to choose a speaker with speech.
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>

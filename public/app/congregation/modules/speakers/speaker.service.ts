@@ -14,12 +14,21 @@ export class SpeakerService {
         return this.http.get('/api/speakers?search='+search);
     }
 
-    favorites() {
-        return this.http.get('/api/speakers/favorites');
+    favorites(time) {
+        if ( time ) {
+            return this.http.get('/api/speakers/favorites?time='+time);
+        } else {
+            return this.http.get('/api/speakers/favorites');
+        }
+
     }
 
-    debtors() {
-        return this.http.get('/api/speakers/debtors');
+    debtors(time) {
+        if ( time ) {
+            return this.http.get('/api/speakers/debtors?time='+time);
+        } else {
+            return this.http.get('/api/speakers/debtors');
+        }
     }
 
     long() {

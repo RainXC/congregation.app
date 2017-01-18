@@ -4,6 +4,8 @@ namespace App\SpeakersApp\Speaker\Http\Controllers;
 
 use App\SpeakersApp\Speaker\Model\Speaker;
 use App\SpeakersApp\Speaker\Repository\SpeakerRepo;
+use App\SpeakersApp\Speaker\View\SpeakersView;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -40,22 +42,33 @@ class SpeakerController extends Controller
                 ->orWhere('code', 'LIKE', '%'.$value.'%');
         }
 
-        return response()->json($speakers->get());
+        return response()->json(new SpeakersView($speakers));
     }
 
     public function favorites()
     {
         $repo = new SpeakerRepo();
         $speakers = $repo->filterByFavorite()->get();
-        return response()->json($speakers);
+        $view = new SpeakersView( $speakers );
+
+        if ( Input::get('time') ) {
+            $view->setCurrentTime(Carbon::parse(Input::get('time')));
+        }
+
+        return response()->json($view);
     }
 
     public function debtors()
     {
         $repo = new SpeakerRepo();
         $speakers = $repo->filterByDebt()->get();
+        $view = new SpeakersView( $speakers );
 
-        return response()->json($speakers);
+        if ( Input::get('time') ) {
+            $view->setCurrentTime(Carbon::parse(Input::get('time')));
+        }
+
+        return response()->json($view);
     }
 
     /**

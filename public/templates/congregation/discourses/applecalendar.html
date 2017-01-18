@@ -19,9 +19,6 @@
                                 {{discourse.timeDetails.day}}
                             </div>
                             <div class="dayControls">
-                                <div class="btn-group btn-group-xs" role="group" aria-label="...">
-                                    <button class="btn btn-default btn-xs" [routerLink]="['/discourses', discourse.id]" >Details</button>
-                                </div>
                                 <span class="label label-warning" *ngIf="!discourse.assignment"> Not assigned </span>
                                 <span class="label label-{{discourse.assignment.status.color}}" *ngIf="discourse.assignment"> {{discourse.assignment.status.name}} </span>
                             </div>
