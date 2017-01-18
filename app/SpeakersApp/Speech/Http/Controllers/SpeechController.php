@@ -3,6 +3,7 @@
 namespace App\SpeakersApp\Speech\Http\Controllers;
 
 use App\SpeakersApp\Speech\Model\Speech;
+use App\SpeakersApp\Speech\View\SpeechesView;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -29,9 +30,9 @@ class SpeechController extends Controller
      */
     public function index()
     {
-        $speeches = Speech::all();
+        $speeches = Speech::where('name', '!=', '');
 
-        return response()->json($speeches);
+        return response()->json(new SpeechesView($speeches));
     }
 
     /**

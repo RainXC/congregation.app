@@ -69,7 +69,7 @@
 .days .dayControls {
     position: absolute;
     left: 10px;
-    top: 10px;
+    top: 17px;
 }
 
 @media only screen and (max-width: 600px) {

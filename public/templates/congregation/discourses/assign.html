@@ -26,46 +26,45 @@
             </div>
         </div>
 
-
         <div class="row">
             <div class="col-md-7 col-sm-7">
                 <div class="speakers" *ngIf="!speakerSelected">
                     <div class="speaker-search">
                         <div class="row">
                             <div class="col-md-12 col-xs-12">
+                                <input type="text" class="form-control speaker-search-input" (click)="setSearch()" [(ngModel)]="speakerName" placeholder="Search by speakers's name" (ngModelChange)="reloadSpeakers()">
                                 <button class="btn btn-primary" (click)="setCurrentList('favorites')">Favorites</button>
                                 <button class="btn btn-success" (click)="setCurrentList('debtors')">Debtors</button>
-                                <input type="text" class="form-control speaker-search-input" (click)="setSearch()" [(ngModel)]="speakerName" placeholder="Search by speakers's name" (ngModelChange)="reloadSpeakers()">
                             </div>
                         </div>
                     </div>
                     <div class="found" *ngIf="isCurrentList('search')">
-                        <div class="row speaker-search-results speaker" *ngFor="let speaker of speakers" (click)="setSpeakerSelected(speaker)">
+                        <div class="row speaker-search-results speaker" *ngFor="let speaker of speakers" (click)="setSpeakerSelected(speaker.speaker)">
                             <div class="col-md-8 col-xs-8">
-                                {{speaker.firstname}} {{speaker.lastname}}
+                                {{speaker.speaker.firstname}} {{speaker.speaker.lastname}}
                             </div>
-                            <div class="col-md-4 col-xs-4" *ngIf="speaker.discourses">
-                                {{speaker.discourses[speaker.discourses.length-1]?.time | smartdate}}
+                            <div class="col-md-4 col-xs-4" *ngIf="speaker.nearestDiscourse">
+                                {{speaker.nearestDiscourse.time | smartdate:discourse?.getTime()}}
                             </div>
                         </div>
                     </div>
                     <div class="list" *ngIf="isCurrentList('favorites')">
-                        <div class="row speaker-search-results speaker" *ngFor="let speaker of favorites" (click)="setSpeakerSelected(speaker)">
+                        <div class="row speaker-search-results speaker" *ngFor="let speaker of favorites" (click)="setSpeakerSelected(speaker.speaker)">
                             <div class="col-md-8 col-xs-8">
-                                {{speaker.firstname}} {{speaker.lastname}}
+                                {{speaker.speaker.firstname}} {{speaker.speaker.lastname}}
                             </div>
-                            <div class="col-md-4 col-xs-4" *ngIf="speaker.discourses">
-                                {{speaker.discourses[speaker.discourses.length-1]?.time | smartdate}}
+                            <div class="col-md-4 col-xs-4" *ngIf="speaker.nearestDiscourse">
+                                {{speaker.nearestDiscourse.time | smartdate:discourse?.getTime()}}
                             </div>
                         </div>
                     </div>
                     <div class="list" *ngIf="isCurrentList('debtors')">
-                        <div class="row speaker-search-results speaker" *ngFor="let speaker of debtors" (click)="setSpeakerSelected(speaker)">
+                        <div class="row speaker-search-results speaker" *ngFor="let speaker of debtors" (click)="setSpeakerSelected(speaker.speaker)">
                             <div class="col-md-8 col-xs-8">
-                                {{speaker.firstname}} {{speaker.lastname}}
+                                {{speaker.speaker.firstname}} {{speaker.speaker.lastname}}
                             </div>
-                            <div class="col-md-4 col-xs-4" *ngIf="speaker.discourses">
-                                {{speaker.discourses[speaker.discourses.length-1]?.time | smartdate}}
+                            <div class="col-md-4 col-xs-4" *ngIf="speaker.nearestDiscourse">
+                                {{speaker.nearestDiscourse.time | smartdate:discourse?.getTime()}}
                             </div>
                         </div>
                     </div>
