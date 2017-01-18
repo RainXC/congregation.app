@@ -55,6 +55,11 @@ class SpeechesView implements \JsonSerializable
         }
     }
 
+    public function get()
+    {
+        return $this->_speeches;
+    }
+
     public function jsonSerialize()
     {
         return $this->_speeches;

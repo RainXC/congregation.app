@@ -3,12 +3,18 @@ import * as moment from 'moment/moment';
 
 @Pipe({ name: 'fromNow' })
 export class FromNowPipe implements PipeTransform {
+    private value: any;
 
-    transform(value: any): string {
+    transform(value: any, currentTime: any): string {
         if (value === undefined || value === null) return null;
+        this.value = moment(value);
 
-        let date = moment(value);
-        return date.fromNow();
+        if (currentTime === undefined || currentTime === null)
+            currentTime = moment();
+        else
+            currentTime = moment(currentTime);
+
+        return this.value.fromNow(currentTime);
     }
 
 }

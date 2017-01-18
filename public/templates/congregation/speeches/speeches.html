@@ -41,7 +41,7 @@
                             <td *ngIf="speech.nearestDiscourse">
                                 {{speech.nearestDiscourse.time | fromNow}}
                                 <div class="additional">
-                                    {{speech.nearestDiscourse.assignment.speaker.firstname}} {{speech.nearestDiscourse.assignment.speaker.lastname}} {{speech.nearestDiscourse.time | date}}
+                                    {{speech.nearestDiscourse.assignment.speaker.firstname}} {{speech.nearestDiscourse.assignment.speaker.lastname}}, {{speech.nearestDiscourse.time | date}}
                                 </div>
                             </td>
                             <td *ngIf="!speech.nearestDiscourse">Not available</td>

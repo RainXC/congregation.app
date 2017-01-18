@@ -9,6 +9,9 @@
 namespace App\SpeakersApp\Speaker\View;
 
 
+use App\Profile\Http\Controllers\ProfileController;
+use App\SpeakersApp\Speech\Model\Speech;
+use App\SpeakersApp\Speech\View\SpeechesView;
 use Carbon\Carbon;
 
 class SpeakersView implements \JsonSerializable
@@ -61,7 +64,10 @@ class SpeakersView implements \JsonSerializable
                 $speaker->setCurrentTime($this->currentTime);
             }
 
-            $_speaker = [ 'speaker' => $speaker ];
+            $_speaker = [
+                'speaker' => $speaker,
+                'speeches'=> $this->processSpeeches($speaker->speeches)
+            ];
 
             if ( $speaker->getNearestDiscourse() ) {
                 $_speaker = array_merge($_speaker, [ 'nearestDiscourse' => $speaker->getNearestDiscourse() ]);
@@ -77,6 +83,18 @@ class SpeakersView implements \JsonSerializable
         }
 
         return $this;
+    }
+
+    private function processSpeeches($speeches)
+    {
+        $idList = [];
+        foreach($speeches as $speech) {
+            $idList[] = $speech->id;
+        }
+
+        $view = new SpeechesView(Speech::whereIn('id', $idList));
+
+        return $view->get();
     }
 
     public function getSpeakers()

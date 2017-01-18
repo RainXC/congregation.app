@@ -39,32 +39,59 @@
                         </div>
                     </div>
                     <div class="found" *ngIf="isCurrentList('search')">
-                        <div class="row speaker-search-results speaker" *ngFor="let speaker of speakers" (click)="setSpeakerSelected(speaker.speaker)">
+                        <div class="row speaker-search-results speaker" *ngFor="let speaker of speakers" (click)="setSpeakerSelected(speaker)">
                             <div class="col-md-8 col-xs-8">
                                 {{speaker.speaker.firstname}} {{speaker.speaker.lastname}}
+                                <div class="additional">
+                                    <span [style.color]="speaker.speaker.status.color">{{speaker.speaker.status.name}}</span>
+                                </div>
                             </div>
                             <div class="col-md-4 col-xs-4" *ngIf="speaker.nearestDiscourse">
-                                {{speaker.nearestDiscourse.time | smartdate:discourse?.getTime()}}
+                                {{speaker.nearestDiscourse.time | fromNow:discourse?.getTime()}}
+                                <div class="additional">
+                                    {{speaker.nearestDiscourse.time | date}}
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-xs-4" *ngIf="!speaker.nearestDiscourse">
+                                Hasn't gave talk yet
                             </div>
                         </div>
                     </div>
                     <div class="list" *ngIf="isCurrentList('favorites')">
-                        <div class="row speaker-search-results speaker" *ngFor="let speaker of favorites" (click)="setSpeakerSelected(speaker.speaker)">
+                        <div class="row speaker-search-results speaker" *ngFor="let speaker of favorites" (click)="setSpeakerSelected(speaker)">
                             <div class="col-md-8 col-xs-8">
                                 {{speaker.speaker.firstname}} {{speaker.speaker.lastname}}
+                                <div class="additional">
+                                    <span [style.color]="speaker.speaker.status.color">{{speaker.speaker.status.name}}</span>
+                                </div>
                             </div>
                             <div class="col-md-4 col-xs-4" *ngIf="speaker.nearestDiscourse">
-                                {{speaker.nearestDiscourse.time | smartdate:discourse?.getTime()}}
+                                {{speaker.nearestDiscourse.time | fromNow:discourse?.getTime()}}
+                                <div class="additional">
+                                    {{speaker.nearestDiscourse.time | date}}
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-xs-4" *ngIf="!speaker.nearestDiscourse">
+                                Hasn't gave talk yet
                             </div>
                         </div>
                     </div>
                     <div class="list" *ngIf="isCurrentList('debtors')">
-                        <div class="row speaker-search-results speaker" *ngFor="let speaker of debtors" (click)="setSpeakerSelected(speaker.speaker)">
+                        <div class="row speaker-search-results speaker" *ngFor="let speaker of debtors" (click)="setSpeakerSelected(speaker)">
                             <div class="col-md-8 col-xs-8">
                                 {{speaker.speaker.firstname}} {{speaker.speaker.lastname}}
+                                <div class="additional">
+                                    <span [style.color]="speaker.speaker.status.color">{{speaker.speaker.status.name}}</span>
+                                </div>
                             </div>
                             <div class="col-md-4 col-xs-4" *ngIf="speaker.nearestDiscourse">
-                                {{speaker.nearestDiscourse.time | smartdate:discourse?.getTime()}}
+                                {{speaker.nearestDiscourse.time | fromNow:discourse?.getTime()}}
+                                <div class="additional">
+                                    {{speaker.nearestDiscourse.time | date}}
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-xs-4" *ngIf="!speaker.nearestDiscourse">
+                                Hasn't gave talk yet
                             </div>
                         </div>
                     </div>
@@ -75,15 +102,27 @@
                             <div class="col-md-12 col-xs-12">
                                 <button class="btn btn-default" (click)="returnToSpeakers()">Return</button>
                                 <div class="speaker-search-input speaker-selected">
-                                    {{speakerSelected.firstname}} {{speakerSelected.lastname}}, <small>{{speakerSelected.phone}}, {{speakerSelected.congregation.name}}</small>
+                                    {{speakerSelected.speaker.firstname}} {{speakerSelected.speaker.lastname}}, <small>{{speakerSelected.speaker.phone}}, {{speakerSelected.speaker.congregation.name}}</small>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="list">
+                        <div class="alert alert-default" *ngIf="!speakerSelected.speeches">
+                            No speeches
+                        </div>
                         <div class="row speaker-search-results speaker" *ngFor="let speech of speakerSelected.speeches" (click)="setSpeechSelected(speech)">
-                            <div class="col-md-12">
-                                {{speech.name}}
+                            <div class="col-md-8">
+                                {{speech.speech.name}}
+                            </div>
+                            <div class="col-md-4 col-xs-4" *ngIf="speech.nearestDiscourse">
+                                {{speech.nearestDiscourse.time | fromNow:discourse?.getTime()}}
+                                <div class="additional">
+                                    {{speech.nearestDiscourse.assignment.speaker.firstname}} {{speech.nearestDiscourse.assignment.speaker.lastname}}, {{speech.nearestDiscourse.time | date}}
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-xs-4" *ngIf="!speech.nearestDiscourse">
+                                Not given yet
                             </div>
                         </div>
                     </div>
@@ -104,12 +143,12 @@
                     </div>
                     <div class="row speech">
                         <div class="col-md-12">
-                            <h2>{{speechSelected.name}}</h2>
+                            <h2>{{speechSelected.speech.name}}</h2>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <h2>{{speakerSelected.firstname}} {{speakerSelected.lastname}}, <small>{{speakerSelected.phone}}, {{speakerSelected.congregation.name}}</small></h2>
+                            <h2>{{speakerSelected.speaker.firstname}} {{speakerSelected.speaker.lastname}}, <small>{{speakerSelected.speaker.phone}}, {{speakerSelected.speaker.congregation.name}}</small></h2>
                         </div>
                     </div>
                 </div>
