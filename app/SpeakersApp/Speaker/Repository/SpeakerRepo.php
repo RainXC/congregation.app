@@ -2,6 +2,8 @@
 namespace App\SpeakersApp\Speaker\Repository;
 
 
+use App\SpeakersApp\Discourse\Model\Discourse;
+use App\SpeakersApp\Discourse\Model\DiscourseAssignment;
 use App\SpeakersApp\Speaker\Model\Speaker;
 
 class SpeakerRepo
@@ -15,6 +17,22 @@ class SpeakerRepo
 
     public function filterByDebt()
     {
+        $debtList = [];
+        $assignments = DiscourseAssignment::where('statusId', DiscourseAssignment::STATUS_CANCELED);
+        foreach( $assignments->get() as $assignment ) {
+            $repaid = DiscourseAssignment::where('speakerId', $assignment->speakerId)
+                                        ->where('speechId', $assignment->speechId)
+                                        ->whereIn('statusId', [
+                                            DiscourseAssignment::STATUS_COMPLETED,
+                                            DiscourseAssignment::STATUS_CONFIRMED,
+                                            DiscourseAssignment::STATUS_PRESET
+                                        ])->first();
+            if ( !$repaid ) {
+                $debtList[] = $assignment->speakerId;
+            }
+        }
+
+        $this->speakers->whereIn('id', $debtList);
 
         return $this;
     }
