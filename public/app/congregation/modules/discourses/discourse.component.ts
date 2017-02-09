@@ -11,18 +11,22 @@ import {DiscourseHistoryComponent} from "./history/discourseHistory.component";
 import {ViewChild} from "@angular/core/src/metadata/di";
 import {DiscourseHistoryService} from "./history/discourseHistory.service";
 import {Subscription} from "rxjs";
+import {forEach} from "@angular/router/src/utils/collection";
 
 @Component({
     selector: 'cg-discourse',
     templateUrl: '/templates/congregation/discourses/discourse.html',
-    providers: [ Title, DiscourseService ]
+    providers: [ Title, DiscourseService ],
+    styleUrls: ['css/discourse.css']
 })
 export class DiscourseComponent implements OnDestroy {
     public id: number;
     public discourse: Discourse;
     public nextDisc: Discourse;
     public prevDisc: Discourse;
-    subscription: Subscription;
+    public subscription: Subscription;
+    public nextTwo: Array<any> = [];
+    public prevTwo: Array<any> = [];
 
     constructor(
         private title: Title,
@@ -50,13 +54,12 @@ export class DiscourseComponent implements OnDestroy {
                 if ( result.discourse ) {
                     this.discourse = new Discourse(result.discourse, this.discourseService);
                 }
-                if ( result.prev ) {
-                    this.prevDisc  = new Discourse(result.prev, this.discourseService);
+                if ( result.nextTwo ) {
+                    this.nextTwo = result.nextTwo;
                 }
-                if ( result.next ) {
-                    this.nextDisc  = new Discourse(result.next, this.discourseService);
+                if ( result.prevTwo ) {
+                    this.prevTwo = result.prevTwo;
                 }
-
             }, response => {
                 if ( response.status == 401 ) {
                     this.router.navigate(['unauthorized']);

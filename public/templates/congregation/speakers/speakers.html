@@ -20,6 +20,7 @@
                             <th>#</th>
                             <th>Name</th>
                             <th>Mobile</th>
+                            <th>Congregation</th>
                             <th>Nearest discourse</th>
                         </tr>
                         </thead>
@@ -29,8 +30,7 @@
                             <td>
                                 {{speaker.speaker.firstname}} {{speaker.speaker.lastname}}
                                 <div class="additional">
-                                    Created at: {{speaker.speaker.created_at}} <br>
-                                    Updated at: {{speaker.speaker.updated_at}}
+                                    Available <strong>{{speaker.speaker.speeches.length}}</strong> speech{{speaker.speaker.speeches.length>1?'es':''}}
                                 </div>
                             </td>
                             <td>
@@ -38,6 +38,9 @@
                                 <div class="additional">
                                     <span [style.color]="speaker.speaker.status.color">{{speaker.speaker.status.name}}</span>
                                 </div>
+                            </td>
+                            <td>
+                                {{speaker.speaker.congregation.name}}
                             </td>
                             <td *ngIf="speaker.nearestDiscourse">
                                 {{speaker.nearestDiscourse.time | fromNow}}

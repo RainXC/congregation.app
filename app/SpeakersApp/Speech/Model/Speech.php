@@ -111,7 +111,7 @@ class Speech extends Model
                         DiscourseAssignment::STATUS_CONFIRMED,
                         DiscourseAssignment::STATUS_PRESET
                     ]);
-            })->first();
+            })->orderBy('id', 'asc')->first();
 
         return $discourse;
     }
@@ -134,7 +134,7 @@ class Speech extends Model
                         DiscourseAssignment::STATUS_CONFIRMED,
                         DiscourseAssignment::STATUS_PRESET
                     ]);
-            })->first();
+            })->orderBy('id', 'desc')->first();
 
         return $discourse;
     }

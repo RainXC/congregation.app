@@ -30,11 +30,30 @@ class DiscourseDetails implements \JsonSerializable
 
     public function jsonSerialize()
     {
-        return [
+        $details = [
             'discourse' => $this->getDiscourse(),
-            'next'      => $this->getDiscourse()->nextDate(),
-            'prev'      => $this->getDiscourse()->prevDate()
+            'prevTwo'   => [],
+            'nextTwo'   => []
         ];
+
+        if ( $this->getDiscourse()->prevDate()->prevDate() ) {
+            array_push($details['prevTwo'], $this->getDiscourse()->prevDate()->prevDate());
+        }
+        if ( $this->getDiscourse()->prevDate() ) {
+            array_push($details['prevTwo'], $this->getDiscourse()->prevDate());
+            array_merge($details, ['prev'=> $this->getDiscourse()->prevDate()]);
+
+        }
+
+        if ( $this->getDiscourse()->nextDate() ) {
+            array_push($details['nextTwo'], $this->getDiscourse()->nextDate());
+            array_merge($details, ['next' => $this->getDiscourse()->nextDate()]);
+            if ( $this->getDiscourse()->nextDate()->nextDate() ) {
+                array_push($details['nextTwo'], $this->getDiscourse()->nextDate()->nextDate());
+            }
+        }
+
+        return $details;
     }
 
 }

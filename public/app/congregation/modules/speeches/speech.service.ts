@@ -9,4 +9,8 @@ export class SpeechService {
     list() {
         return this.http.get('/api/speeches');
     }
+
+    search(query) {
+        return this.http.get(`/api/speeches?search=${query}`);
+    }
 }

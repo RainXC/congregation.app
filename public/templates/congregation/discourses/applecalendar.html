@@ -2,10 +2,6 @@
     <cg-header></cg-header>
 
     <div class="container animated fadeIn">
-        <div class="page-header animated fadeIn animation-delay-3">
-            <h1 class="calendarHeading">Discourses schedule for {{user.profile?.congregation.name}}</h1>
-        </div>
-
         <div class="row years" *ngFor="let year of years;">
             <div class="col-md-12">
                 <div class="months animated fadeIn animation-delay-5" *ngFor="let month of year.months; let $index = index;">
@@ -16,11 +12,8 @@
                     <div class="row">
                         <div class="col-md-4 col-sm-6 {{!discourse.assignment?'notAssigned':''}} days" *ngFor="let discourse of month.discourses;" [routerLink]="['/discourses', discourse.id]">
                             <div class="dayNumber">
-                                {{discourse.timeDetails.day}}
-                            </div>
-                            <div class="dayControls">
-                                <span class="label label-warning" *ngIf="!discourse.assignment"> Not assigned </span>
-                                <span class="label label-{{discourse.assignment.status.color}}" *ngIf="discourse.assignment"> {{discourse.assignment.status.name}} </span>
+                                <span class="indicator indicator-danger indicator-danger-animated" *ngIf="!discourse.assignment"></span>
+                                <span class="indicator indicator-{{discourse.assignment.status.color}}" *ngIf="discourse.assignment"></span> {{discourse.timeDetails.day}}
                             </div>
 
                             <div class="row">
@@ -42,7 +35,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 
     <cg-footer></cg-footer>

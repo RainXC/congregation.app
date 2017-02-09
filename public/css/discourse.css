@@ -1,41 +1,20 @@
-.page-header {
-    margin-left: -15px;
-    margin-right: -15px;
-}
-
-.calendarHeading {
-    font-size: 40px;
-    color: #6f6f6f;
-    font-weight: 200;
-    margin: 0 5px;
-}
-
-.months h3.monthName span {
-    font-weight: 200;
-    font-size: 28px;
-}
-
-.months h3.monthName {
-    font-weight: 300;
-    font-size: 30px;
-    color: #3f3f3f;
-    margin-top: 30px;
-    margin-bottom: 20px;
-}
-
 .days {
-    height: 200px;
+    height: 140px;
     position: relative;
     border: 1px solid #ececec;
     margin-left: -1px;
     margin-top: -1px;
-    padding-top: 50px;
+    padding-top: 40px;
     cursor: pointer;
     transition:  800ms;
+    opacity: .6;
+    padding-right: 7px;
+    padding-left: 7px;
 }
 
 .days:hover {
     background: #fafafa;
+    opacity: 1;
 }
 .days:active {
     background: #1dc5ff;
@@ -45,23 +24,32 @@
     position: absolute;
     right: 10px;
     top: 10px;
-    font-size: 18px;
+    font-size: 13px;
     font-weight: 500;
-    width: 38px;
+    width: 100px;
     color: #525252;
     text-align: right;
 }
 
+.days .dayNumber span {
+    font-size: 13px;
+    font-weight: 200;
+}
+
 .days h4 {
     font-weight: 300;
+    font-size: 12px;
+    margin: 5px 0;
 }
 .days h5 {
     font-weight: 400;
+    font-size: 11px;
+    margin: 5px 0;
 }
 
 .days .notAssignedLabel {
     color: #828282;
-    font-size: 16px;
+    font-size: 13px;
     font-weight: 300;
     margin-top: 10px;
 }
@@ -70,6 +58,18 @@
     position: absolute;
     left: 10px;
     top: 17px;
+}
+
+.days.current {
+    border-right: none;
+    background-color: #f7f7f7;
+    opacity: 1;
+}
+
+
+.work-area {
+    min-height: 1000px;
+    margin-top: 20px;
 }
 
 .days:hover .indicator-primary {
@@ -86,11 +86,4 @@
 }
 .days:hover .indicator-danger {
     animation: danger-background-change 1s infinite;
-}
-
-@media only screen and (max-width: 600px) {
-    .months .row {
-        margin-left: -10px;
-        margin-right: -10px;
-    }
 }

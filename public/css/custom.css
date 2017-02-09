@@ -191,6 +191,10 @@ table td {
     box-shadow: 0 1px 6px rgba(0,0,0,.1);
 }
 
+.btn {
+    transition: 300ms;
+}
+
 .btn-primary {
     color: #0082a1;
     background-color: #fff;
@@ -289,6 +293,7 @@ table td {
 
 .discourseContainer {
     height: 260px;
+    margin-top: 30px;
 }
 
 .discourseContainer .speech {
@@ -382,8 +387,8 @@ table td {
 }
 
 .assign-from-content .text-info {
-    opacity: 0;
-    transition: 300ms;
+    transition: 1000ms;
+    color: #696969;
 }
 
 .assign-from-content:hover {
@@ -391,7 +396,7 @@ table td {
     cursor: pointer;
 }
 .assign-from-content:hover .text-info{
-    opacity: 1;
+    color: #2aa9cb;
 }
 
 /*!
@@ -426,4 +431,120 @@ table td {
     -moz-transition: all 0.5s ease-in-out;
     -o-transition: all 0.5s ease-in-out;
     transition: all 0.5s ease-in-out;
+}
+
+.speech-new,
+.indicator {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.speaker-search-results .speech-new {
+    position: absolute;
+    left: 0px;
+    top: 6px;
+}
+
+.indicator-success {
+    background-color: #5ecb44;
+}
+.indicator-success-animated {
+    animation: success-background-change 2s infinite;
+}
+
+.indicator-primary {
+    background-color: #2ea0f5;
+}
+.indicator-primary-animated {
+    animation: primary-background-change 2s infinite;
+}
+
+.indicator-warning {
+    background-color: #f9bc6c;
+}
+.indicator-warning-animated {
+    animation: warning-background-change 2s infinite;
+}
+
+.indicator-info {
+    background-color: #6eeae7;
+}
+.indicator-info-animated {
+    animation: info-background-change 2s infinite;
+}
+
+.indicator-danger {
+    background-color: #ff6f5b;
+}
+.indicator-danger-animated {
+    animation: danger-background-change 500ms infinite;
+}
+
+@keyframes success-background-change {
+    /* You could think of as "step 1" */
+    0% {
+        background: #5ecb44;
+    }
+    /* You could think of as "step 1" */
+    50% {
+        background: #13720f;
+    }
+    /* You could think of as "step 2" */
+    100% {
+        background: #5ecb44;
+    }
+}
+@keyframes primary-background-change {
+    /* You could think of as "step 1" */
+    0% {
+        background: #2ea0f5;
+    }
+    50% {
+        background: #245ec6;
+    }
+    /* You could think of as "step 2" */
+    100% {
+        background: #2ea0f5;
+    }
+}
+@keyframes warning-background-change {
+    /* You could think of as "step 1" */
+    0% {
+        background: #f9bc6c;
+    }
+    50% {
+        background: #b2864f;
+    }
+    /* You could think of as "step 2" */
+    100% {
+        background: #f9bc6c;
+    }
+}
+@keyframes info-background-change {
+    /* You could think of as "step 1" */
+    0% {
+        background: #6eeae7;
+    }
+    50% {
+        background: #49a6a4;
+    }
+    /* You could think of as "step 2" */
+    100% {
+        background: #6eeae7;
+    }
+}
+@keyframes danger-background-change {
+    /* You could think of as "step 1" */
+    0% {
+        background: #ff6f5b;
+    }
+    50% {
+        background: #ff0311;
+    }
+    /* You could think of as "step 2" */
+    100% {
+        background: #ff6f5b;
+    }
 }

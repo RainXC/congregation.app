@@ -1,26 +1,28 @@
 /**
  * Created by dmitricercel on 15.11.16.
  */
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Component, OnInit, OnDestroy, ElementRef, Renderer, AfterViewInit, ViewChild} from '@angular/core';
 import {Title} from "@angular/platform-browser";
 import {ActivatedRoute, Router} from "@angular/router";
 import {DiscourseService} from "./discourse.service";
 import {Discourse} from "./discourse.class";
 import {Location} from '@angular/common';
 import {DiscourseHistoryComponent} from "./history/discourseHistory.component";
-import {ViewChild} from "@angular/core/src/metadata/di";
 import {DiscourseHistoryService} from "./history/discourseHistory.service";
 import {Subscription} from "rxjs";
 import {Http} from "@angular/http";
 import {SpeakerService} from "../speakers/speaker.service";
+import {SpeechService} from "../speeches/speech.service";
 
 @Component({
     selector: 'cg-assign',
     templateUrl: '/templates/congregation/discourses/assign.html',
-    providers: [ Title, DiscourseService, SpeakerService ],
-    styleUrls: ['css/assign.css'],
+    providers: [ Title, DiscourseService, SpeakerService, SpeechService ],
+    styleUrls: ['css/assign.css', 'css/discourse.css'],
 })
-export class AssignComponent implements OnDestroy, OnInit {
+export class AssignComponent implements OnDestroy, OnInit, AfterViewInit {
+    @ViewChild('searchSpeakers') input: ElementRef;
+    @ViewChild('speechInput') speechInput: ElementRef;
     public id: number;
     public discourse: Discourse;
     public nextDisc: Discourse;
@@ -30,9 +32,13 @@ export class AssignComponent implements OnDestroy, OnInit {
     public speakers: Array<any>;
     public debtors: Array<any>;
     public favorites: Array<any>;
+    public speechesFound: Array<any>;
     public current: string;
     public speakerSelected: any;
     public speechSelected: any;
+    public searchSpeech: string;
+    public nextTwo: Array<any> = [];
+    public prevTwo: Array<any> = [];
 
 
     constructor(
@@ -40,7 +46,9 @@ export class AssignComponent implements OnDestroy, OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private discourseService: DiscourseService,
-        private speakerService: SpeakerService
+        private speakerService: SpeakerService,
+        private speechService: SpeechService,
+        private renderer: Renderer
     ) {
         this.title.setTitle('Congregation App. Create assignment');
         this.route.params.subscribe(params => {
@@ -52,6 +60,10 @@ export class AssignComponent implements OnDestroy, OnInit {
                 console.log(`${discourse} should be reloaded`);
                 this.loadDiscourse(this.id);
             });
+    }
+
+    ngAfterViewInit() {
+        this.renderer.invokeElementMethod(this.input.nativeElement, 'focus');
     }
 
     ngOnInit() {
@@ -66,11 +78,11 @@ export class AssignComponent implements OnDestroy, OnInit {
                 if ( result.discourse ) {
                     this.discourse = new Discourse(result.discourse, this.discourseService);
                 }
-                if ( result.prev ) {
-                    this.prevDisc  = new Discourse(result.prev, this.discourseService);
+                if ( result.nextTwo ) {
+                    this.nextTwo = result.nextTwo;
                 }
-                if ( result.next ) {
-                    this.nextDisc  = new Discourse(result.next, this.discourseService);
+                if ( result.prevTwo ) {
+                    this.prevTwo = result.prevTwo;
                 }
                 this.loadFavorites();
                 this.loadDebtors();
@@ -149,6 +161,7 @@ export class AssignComponent implements OnDestroy, OnInit {
 
     setSpeakerSelected(speaker) {
         this.speakerSelected = speaker;
+        // this.renderer.invokeElementMethod(this.speechInput.nativeElement, 'focus');
 
         return true;
     }
@@ -172,7 +185,7 @@ export class AssignComponent implements OnDestroy, OnInit {
     }
 
     createAssignment() {
-        this.discourseService.assign(this.id, this.speakerSelected.id, this.speechSelected.id).subscribe(response => {
+        this.discourseService.assign(this.id, this.speakerSelected.speaker.id, this.speechSelected.speech.id).subscribe(response => {
             this.back();
         });
 
@@ -183,5 +196,21 @@ export class AssignComponent implements OnDestroy, OnInit {
         this.speechSelected = null;
 
         return true;
+    }
+
+    searchSpeechRun() {
+        if ( this.searchSpeech.length > 0 ) {
+            this.speechService.search(this.searchSpeech).subscribe(response => {
+                this.speechesFound = response.json();
+                console.log(this.speechesFound);
+            }, response => {
+                if (response.status == 401) {
+                    this.router.navigate(['unauthorized']);
+                }
+            });
+        } else {
+            this.speechesFound = [];
+        }
+
     }
 }

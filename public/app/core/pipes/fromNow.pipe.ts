@@ -14,7 +14,7 @@ export class FromNowPipe implements PipeTransform {
         else
             currentTime = moment(currentTime);
 
-        return this.value.fromNow(currentTime);
+        return this.value.from(currentTime);
     }
 
 }

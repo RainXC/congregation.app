@@ -10,6 +10,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
+use Symfony\Component\HttpFoundation\IpUtils;
 
 class SpeechController extends Controller
 {
@@ -31,6 +32,24 @@ class SpeechController extends Controller
     public function index()
     {
         $speeches = Speech::where('name', '!=', '');
+
+        if ( Input::get('id') ) {
+            $speeches->where( 'id', Input::get('id') );
+        }
+
+        if ( Input::get('code') ) {
+            $speeches->where( 'code', Input::get('code') );
+        }
+
+        if ( Input::get('name') ) {
+            $speeches->where( 'name', Input::get('name') );
+        }
+
+        if ( Input::get('search') ) {
+            $speeches->where( 'name', Input::get('search') )
+                     ->orWhere( 'id', Input::get('search') )
+                     ->orWhere( 'code', Input::get('search') );
+        }
 
         return response()->json(new SpeechesView($speeches));
     }

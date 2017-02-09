@@ -16,7 +16,7 @@
                         <small class="text-muted"><i class="glyphicon glyphicon-time"></i> {{comment.created_at | smartdate}}</small>
                     </div>
                     <div class="timeline-body">
-                        <p>{{comment.comment}}</p>
+                        <p style="white-space: pre-line" [innerHTML]="comment.comment"></p>
                     </div>
                 </div>
             </li>

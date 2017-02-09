@@ -3,6 +3,77 @@
 
     <div class="container discourse animated fadeIn">
         <div class="row">
+            <div class="col-md-2 days" [routerLink]="['/discourses']">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4 class="text-center">
+                            Back to {{discourse?.getTime() | date:'YYYY'}}
+                        </h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 {{!discourse.assignment?'notAssigned':''}} days" *ngFor="let discourse of prevTwo;" [routerLink]="['/discourses', discourse.id]">
+                <div class="dayNumber">
+                    <span class="indicator indicator-{{discourse.assignment.status.color}}" *ngIf="discourse.assignment"></span> <span>{{discourse.time|date:'MMMM'}}</span> {{discourse.timeDetails.day}}
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12" *ngIf="discourse.assignment">
+                        <h4>
+                            {{discourse.assignment?.speaker.firstname}}
+                            {{discourse.assignment?.speaker.lastname}}
+                        </h4>
+                        <h5>
+                            {{discourse.assignment?.speech.name}}
+                        </h5>
+                    </div>
+                    <div class="col-md-12" *ngIf="!discourse.assignment">
+                        <h1 class="notAssignedLabel">You can assign a speaker, whatever you want</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 {{!discourse?.getAssignment()?'notAssigned':''}} days current" [routerLink]="['/discourses', discourse?.getId()]">
+                <div class="dayNumber">
+                    <span class="indicator indicator-{{discourse?.getAssignment().status.color}}" *ngIf="discourse?.getAssignment()"></span> <span>{{discourse?.data.time|date:'MMMM'}}</span> {{discourse?.data.timeDetails.day}}
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12" *ngIf="discourse?.getAssignment()">
+                        <h4>
+                            {{discourse?.getAssignment().speaker.firstname}}
+                            {{discourse?.getAssignment().speaker.lastname}}
+                        </h4>
+                        <h5>
+                            {{discourse?.getAssignment().speech.name}}
+                        </h5>
+                    </div>
+                    <div class="col-md-12" *ngIf="!discourse?.getAssignment()">
+                        <h1 class="notAssignedLabel">You can assign a speaker, whatever you want</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 {{!discourse.assignment?'notAssigned':''}} days" *ngFor="let discourse of nextTwo;" [routerLink]="['/discourses', discourse.id]">
+                <div class="dayNumber">
+                    <span class="indicator indicator-{{discourse.assignment.status.color}}" *ngIf="discourse.assignment"></span> <span>{{discourse.time|date:'MMMM'}}</span> {{discourse.timeDetails.day}}
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12" *ngIf="discourse.assignment">
+                        <h4>
+                            {{discourse.assignment?.speaker.firstname}}
+                            {{discourse.assignment?.speaker.lastname}}
+                        </h4>
+                        <h5>
+                            {{discourse.assignment?.speech.name}}
+                        </h5>
+                    </div>
+                    <div class="col-md-12" *ngIf="!discourse.assignment">
+                        <h1 class="notAssignedLabel">You can assign a speaker, whatever you want</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
             <div class="page-header">
                 <div class="row">
                     <div class="col-md-7 col-sm-9 col-xs-12 text-left">
@@ -32,7 +103,7 @@
                     <div class="speaker-search">
                         <div class="row">
                             <div class="col-md-12 col-xs-12">
-                                <input type="text" class="form-control speaker-search-input" (click)="setSearch()" [(ngModel)]="speakerName" placeholder="Search by speakers's name" (ngModelChange)="reloadSpeakers()">
+                                <input #searchSpeakers type="text" class="form-control speaker-search-input" (click)="setSearch()" [(ngModel)]="speakerName" placeholder="Search by speakers's name" (ngModelChange)="reloadSpeakers()">
                                 <button class="btn btn-primary" (click)="setCurrentList('favorites')">Favorites</button>
                                 <button class="btn btn-success" (click)="setCurrentList('debtors')">Debtors</button>
                             </div>
@@ -53,7 +124,7 @@
                                 </div>
                             </div>
                             <div class="col-md-4 col-xs-4" *ngIf="!speaker.nearestDiscourse">
-                                Hasn't gave talk yet
+                                Not available
                             </div>
                         </div>
                     </div>
@@ -72,7 +143,7 @@
                                 </div>
                             </div>
                             <div class="col-md-4 col-xs-4" *ngIf="!speaker.nearestDiscourse">
-                                Hasn't gave talk yet
+                                Not available
                             </div>
                         </div>
                     </div>
@@ -91,7 +162,7 @@
                                 </div>
                             </div>
                             <div class="col-md-4 col-xs-4" *ngIf="!speaker.nearestDiscourse">
-                                Hasn't gave talk yet
+                                Not available
                             </div>
                         </div>
                     </div>
@@ -111,9 +182,15 @@
                         <div class="alert alert-default" *ngIf="!speakerSelected.speeches">
                             No speeches
                         </div>
-                        <div class="row speaker-search-results speaker" *ngFor="let speech of speakerSelected.speeches" (click)="setSpeechSelected(speech)">
+                        <div class="row speaker-search-results speaker">
+                            <div class="col-md-12">
+                                <input type="text" #speechInput class="form-control" [(ngModel)]="searchSpeech" (ngModelChange)="searchSpeechRun()" placeholder="Search speech">
+                            </div>
+                        </div>
+                        <div class="row speaker-search-results speaker" *ngFor="let speech of speechesFound" (click)="setSpeechSelected(speech)">
                             <div class="col-md-8">
-                                {{speech.speech.name}}
+                                <span class="speech-new"></span>
+                                <h4><small>{{speech.speech.code}}</small> {{speech.speech.name}}</h4>
                             </div>
                             <div class="col-md-4 col-xs-4" *ngIf="speech.nearestDiscourse">
                                 {{speech.nearestDiscourse.time | fromNow:discourse?.getTime()}}
@@ -122,7 +199,21 @@
                                 </div>
                             </div>
                             <div class="col-md-4 col-xs-4" *ngIf="!speech.nearestDiscourse">
-                                Not given yet
+                                Not available
+                            </div>
+                        </div>
+                        <div class="row speaker-search-results speaker" *ngFor="let speech of speakerSelected.speeches" (click)="setSpeechSelected(speech)">
+                            <div class="col-md-8">
+                                <h4><small>{{speech.speech.code}}</small> {{speech.speech.name}}</h4>
+                            </div>
+                            <div class="col-md-4 col-xs-4" *ngIf="speech.nearestDiscourse">
+                                {{speech.nearestDiscourse.time | fromNow:discourse?.getTime()}}
+                                <div class="additional">
+                                    {{speech.nearestDiscourse.assignment.speaker.firstname}} {{speech.nearestDiscourse.assignment.speaker.lastname}}, {{speech.nearestDiscourse.time | date}}
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-xs-4" *ngIf="!speech.nearestDiscourse">
+                                Not available
                             </div>
                         </div>
                     </div>
@@ -143,7 +234,7 @@
                     </div>
                     <div class="row speech">
                         <div class="col-md-12">
-                            <h2>{{speechSelected.speech.name}}</h2>
+                            <h2><small>{{speechSelected.speech.code}}</small> {{speechSelected.speech.name}}</h2>
                         </div>
                     </div>
                     <div class="row">
