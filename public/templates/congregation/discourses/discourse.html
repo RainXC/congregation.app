@@ -77,76 +77,72 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-12 work-area">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="page-header">
-                            <div class="row">
-                                <div class="col-md-12 col-sm-12 col-xs-12 text-left">
-                                    <h1 class="pageHeading">
-                                        {{discourse?.getTime() | date:'MMMM'}} <strong>{{discourse?.getTime() | date:'Do'}}</strong> {{discourse?.getTime() | date:'YYYY'}} at {{discourse?.getTime() | date:'HH:mm'}}
-                                    </h1>
-                                </div>
-                            </div>
+            <div class="col-md-12">
+                <div class="page-header">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12 text-left">
+                            <h1 class="pageHeading">
+                                {{discourse?.getTime() | date:'MMMM'}} <strong>{{discourse?.getTime() | date:'Do'}}</strong> {{discourse?.getTime() | date:'YYYY'}} at {{discourse?.getTime() | date:'HH:mm'}}
+                            </h1>
                         </div>
-                        <div class="discourseContainer" *ngIf="discourse?.isAssigned()">
-                            <div class="row speech">
-                                <div class="col-md-12">
-                                    <h2>{{discourse?.getSpeech().name}} <small>{{discourse?.getSpeech().code}}</small></h2>
-                                </div>
-                            </div>
-                            <div class="row speaker">
-                                <div class="col-md-12">
-                                    <h2>{{discourse?.getSpeaker().firstname}} {{discourse?.getSpeaker().lastname}}, <small>{{discourse?.getSpeaker().phone}}, {{discourse?.getSpeaker().congregation.name}}</small></h2>
-                                </div>
-                            </div>
-                            <div class="row controls">
-                                <div class="col-md-12 col-sm-12 col-xs-12">
-                                    <nav class="navbar navbar-default">
-                                        <div class="container-fluid">
-                                            <p class="navbar-text status-{{discourse?.getAssignment().status.color}}">{{discourse?.getAssignment().status.name}}</p>
-                                            <p class="navbar-text"> {{discourse?.getAssignment().updated_at| smartdate}} </p>
+                    </div>
+                </div>
+                <div class="discourseContainer" *ngIf="discourse?.isAssigned()">
+                    <div class="row speech">
+                        <div class="col-md-12">
+                            <h2>{{discourse?.getSpeech().name}} <small>{{discourse?.getSpeech().code}}</small></h2>
+                        </div>
+                    </div>
+                    <div class="row speaker">
+                        <div class="col-md-12">
+                            <h2>{{discourse?.getSpeaker().firstname}} {{discourse?.getSpeaker().lastname}}, <small>{{discourse?.getSpeaker().phone}}, {{discourse?.getSpeaker().congregation.name}}</small></h2>
+                        </div>
+                    </div>
+                    <div class="row controls">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <nav class="navbar navbar-default">
+                                <div class="container-fluid">
+                                    <p class="navbar-text status-{{discourse?.getAssignment().status.color}}">{{discourse?.getAssignment().status.name}}</p>
+                                    <p class="navbar-text"> {{discourse?.getAssignment().updated_at| smartdate}} </p>
 
-                                            <div class="animated pull-right fadeIn animation-delay-10 control-buttons">
-                                                <a (click)="discourse?.cancel()" *ngIf="discourse?.isAssigned() && !discourse?.isCompleted()" class="btn btn-danger">
-                                                    <i class="glyphicon glyphicon-remove"></i> <span>Cancel</span>
-                                                </a>
-                                                <a class="btn btn-primary" (click)="discourse?.confirm()" *ngIf="!discourse?.isConfirmed() && discourse?.isPreset()">
-                                                    <i class="glyphicon glyphicon-ok-circle"></i> <span>Confirm</span>
-                                                </a>
-                                                <a class="btn btn-success" (click)="discourse?.complete()" *ngIf="discourse?.isConfirmed() && !discourse?.isCompleted()">
-                                                    <i class="glyphicon glyphicon-thumbs-up"></i> <span>Complete</span>
-                                                </a>
-                                            </div>
-                                        </div><!-- /.container-fluid -->
-                                    </nav>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="discourseContainer" *ngIf="!discourse?.isAssigned()">
-                            <div class="row" (click)="assign()">
-                                <div class="col-md-12">
-                                    <div class="assign-from-content">
-                                        <h2 class="text-center">Not assigned</h2>
-                                        <p class="text-info text-center">
-                                            Please click to choose a speaker with speech.
-                                        </p>
+                                    <div class="animated pull-right fadeIn animation-delay-10 control-buttons">
+                                        <a (click)="discourse?.cancel()" *ngIf="discourse?.isAssigned() && !discourse?.isCompleted()" class="btn btn-danger">
+                                            <i class="glyphicon glyphicon-remove"></i> <span>Cancel</span>
+                                        </a>
+                                        <a class="btn btn-primary" (click)="discourse?.confirm()" *ngIf="!discourse?.isConfirmed() && discourse?.isPreset()">
+                                            <i class="glyphicon glyphicon-ok-circle"></i> <span>Confirm</span>
+                                        </a>
+                                        <a class="btn btn-success" (click)="discourse?.complete()" *ngIf="discourse?.isConfirmed() && !discourse?.isCompleted()">
+                                            <i class="glyphicon glyphicon-thumbs-up"></i> <span>Complete</span>
+                                        </a>
                                     </div>
-                                </div>
-                            </div>
+                                </div><!-- /.container-fluid -->
+                            </nav>
                         </div>
-                        <div class="row">
-                            <div class="col-md-12" *ngIf="discourse">
-                                <cg-discourse-commentary [discourse]="discourse"></cg-discourse-commentary>
+                    </div>
+                </div>
+                <div class="discourseContainer" *ngIf="!discourse?.isAssigned()">
+                    <div class="row" (click)="assign()">
+                        <div class="col-md-12">
+                            <div class="assign-from-content">
+                                <h2 class="text-center">Not assigned</h2>
+                                <p class="text-info text-center">
+                                    Please click to choose a speaker with speech.
+                                </p>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12" *ngIf="discourse">
-                        <cg-discourse-history [discourse]="discourse"></cg-discourse-history>
+                        <cg-discourse-commentary [discourse]="discourse"></cg-discourse-commentary>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" *ngIf="discourse">
+                <cg-discourse-history [discourse]="discourse"></cg-discourse-history>
             </div>
         </div>
     </div>

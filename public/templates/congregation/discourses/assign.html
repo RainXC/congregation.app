@@ -3,17 +3,18 @@
 
     <div class="container discourse animated fadeIn">
         <div class="row">
-            <div class="col-md-2 days" [routerLink]="['/discourses']">
+            <div class="col-md-2 days" (click)="back()">
                 <div class="row">
                     <div class="col-md-12">
                         <h4 class="text-center">
-                            Back to {{discourse?.getTime() | date:'YYYY'}}
+                            Back
                         </h4>
                     </div>
                 </div>
             </div>
             <div class="col-md-2 {{!discourse.assignment?'notAssigned':''}} days" *ngFor="let discourse of prevTwo;" [routerLink]="['/discourses', discourse.id]">
                 <div class="dayNumber">
+                    <span class="indicator indicator-danger indicator-danger-animated" *ngIf="!discourse.assignment"></span>
                     <span class="indicator indicator-{{discourse.assignment.status.color}}" *ngIf="discourse.assignment"></span> <span>{{discourse.time|date:'MMMM'}}</span> {{discourse.timeDetails.day}}
                 </div>
 
@@ -34,6 +35,7 @@
             </div>
             <div class="col-md-2 {{!discourse?.getAssignment()?'notAssigned':''}} days current" [routerLink]="['/discourses', discourse?.getId()]">
                 <div class="dayNumber">
+                    <span class="indicator indicator-danger indicator-danger-animated" *ngIf="!discourse?.getAssignment()"></span>
                     <span class="indicator indicator-{{discourse?.getAssignment().status.color}}" *ngIf="discourse?.getAssignment()"></span> <span>{{discourse?.data.time|date:'MMMM'}}</span> {{discourse?.data.timeDetails.day}}
                 </div>
 
@@ -54,6 +56,7 @@
             </div>
             <div class="col-md-2 {{!discourse.assignment?'notAssigned':''}} days" *ngFor="let discourse of nextTwo;" [routerLink]="['/discourses', discourse.id]">
                 <div class="dayNumber">
+                    <span class="indicator indicator-danger indicator-danger-animated" *ngIf="!discourse.assignment"></span>
                     <span class="indicator indicator-{{discourse.assignment.status.color}}" *ngIf="discourse.assignment"></span> <span>{{discourse.time|date:'MMMM'}}</span> {{discourse.timeDetails.day}}
                 </div>
 
@@ -74,23 +77,13 @@
             </div>
         </div>
         <div class="row">
-            <div class="page-header">
-                <div class="row">
-                    <div class="col-md-7 col-sm-9 col-xs-12 text-left">
-                        <h1 class="pageHeading">
-                            {{discourse?.getTime() | date:'MMMM'}} <strong>{{discourse?.getTime() | date:'Do'}}</strong> {{discourse?.getTime() | date:'YYYY'}} at {{discourse?.getTime() | date:'HH:mm'}}
-                            <div class="visible-xs-inline-block mobile-buttons animated fadeInDown animation-delay-10">
-                                <a (click)="back()" class="btn btn-default text-left">
-                                    <i class="glyphicon glyphicon-menu-left"></i> Back
-                                </a>
-                            </div>
-                        </h1>
-                    </div>
-                    <div class="col-md-5 col-sm-3 hidden-xs text-right">
-                        <div class="animated fadeIn animation-delay-10">
-                            <a (click)="back()" class="btn btn-default text-left">
-                                <i class="glyphicon glyphicon-menu-left"></i> <span class="hidden-xs hidden-sm">Back</span>
-                            </a>
+            <div class="col-md-12">
+                <div class="page-header">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12 text-left">
+                            <h1 class="pageHeading">
+                                {{discourse?.getTime() | date:'MMMM'}} <strong>{{discourse?.getTime() | date:'Do'}}</strong> {{discourse?.getTime() | date:'YYYY'}} at {{discourse?.getTime() | date:'HH:mm'}}
+                            </h1>
                         </div>
                     </div>
                 </div>
@@ -98,12 +91,14 @@
         </div>
 
         <div class="row">
-            <div class="col-md-7 col-sm-7">
+            <div class="col-md-12 work-area">
                 <div class="speakers" *ngIf="!speakerSelected">
                     <div class="speaker-search">
                         <div class="row">
-                            <div class="col-md-12 col-xs-12">
+                            <div class="col-md-8 col-xs-4">
                                 <input #searchSpeakers type="text" class="form-control speaker-search-input" (click)="setSearch()" [(ngModel)]="speakerName" placeholder="Search by speakers's name" (ngModelChange)="reloadSpeakers()">
+                            </div>
+                            <div class="col-md-4 col-xs-8 text-right">
                                 <button class="btn btn-primary" (click)="setCurrentList('favorites')">Favorites</button>
                                 <button class="btn btn-success" (click)="setCurrentList('debtors')">Debtors</button>
                             </div>
@@ -172,7 +167,7 @@
                         <div class="row">
                             <div class="col-md-12 col-xs-12">
                                 <button class="btn btn-default" (click)="returnToSpeakers()">Return</button>
-                                <div class="speaker-search-input speaker-selected">
+                                <div class="speaker-selected">
                                     {{speakerSelected.speaker.firstname}} {{speakerSelected.speaker.lastname}}, <small>{{speakerSelected.speaker.phone}}, {{speakerSelected.speaker.congregation.name}}</small>
                                 </div>
                             </div>
@@ -243,11 +238,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-
-
-            <div class="col-md-5 col-sm-5" *ngIf="discourse">
-                <cg-discourse-history [discourse]="discourse"></cg-discourse-history>
             </div>
         </div>
 

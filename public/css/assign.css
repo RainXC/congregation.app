@@ -22,19 +22,34 @@
 
 .speaker-search button {
     margin-right: 10px;
+    padding: 20px 30px;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+    font-size: 18px;
+    font-weight: 100;
+}
+.speaker-search button:hover {
+    background: none;
+    color: inherit;
 }
 
 .speaker-search-input {
     box-shadow: none;
-    border-radius: 3px;
-    font-size: 14px;
-    font-weight: 400;
+    border-radius: 0;
+    font-size: 18px;
     color: #337ab7;
-    width: auto;
+    width: 100%;
     display: inline-block;
     min-width: 193px;
     cursor: pointer;
     margin-right: 10px;
+    padding: 30px 20px;
+    font-weight: 100;
+    border-top: none;
+    border-left: none;
+    border-right: none;
 }
 
 .speaker-selected {
