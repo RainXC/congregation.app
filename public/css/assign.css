@@ -23,16 +23,8 @@
 .speaker-search button {
     margin-right: 10px;
     padding: 20px 30px;
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    border-radius: 0;
     font-size: 18px;
     font-weight: 100;
-}
-.speaker-search button:hover {
-    background: none;
-    color: inherit;
 }
 
 .speaker-search-input {
@@ -57,7 +49,9 @@
     color: #4c4c4c;
     font-weight: 200;
     height: 31px;
-    vertical-align: bottom;
+    vertical-align: text-bottom;
+    width: auto;
+    display: inline-block;
 }
 
 .speaker-last-discourse {

@@ -1,37 +1,31 @@
-<div class="animated fadeIn">
-    <!-- Navigation -->
-    <a id="menu-toggle" href="#" class="btn btn-dark btn-lg toggle"><i class="fa fa-bars"></i></a>
-    <nav id="sidebar-wrapper">
-        <ul class="sidebar-nav">
-            <a id="menu-close" href="#" class="btn btn-light btn-lg pull-right toggle"><i class="fa fa-times"></i></a>
-            <li class="sidebar-brand">
-                <a href="#top" onclick='$("#menu-close").click();'>Congregation App</a>
-            </li>
-            <li role="separator" class="divider"></li>
-            <li>
-                <a href="#top" onclick='$("#menu-close").click();'>Home</a>
-            </li>
-            <li>
-                <a href="#about" onclick='$("#menu-close").click();'>About</a>
-            </li>
-            <li>
-                <a href="#services" onclick='$("#menu-close").click();'>Services</a>
-            </li>
-            <li>
-                <a href="#portfolio" onclick='$("#menu-close").click();'>Portfolio</a>
-            </li>
-        </ul>
-        <cg-sign-in></cg-sign-in>
-    </nav>
+<div class="index-navbar wow fadeIn" data-wow-delay="2s">
+    <cg-header></cg-header>
+</div>
 
+<div class="animated fadeIn">
     <!-- Header -->
-    <header id="top" class="header bgImg">
-        <div class="text-vertical-center">
-            <h1>Welcome to congregation billing</h1>
-            <h3>We promote you speakers module now and territories module soon...</h3>
-            <br>
-            <a href="#about" class="btn btn-dark btn-lg">Find Out More</a>
+    <header id="top" class="header index">
+        <div class="wow fadeIn index-title">
+            <h1>Приглашай докладчиков просто</h1>
+            <h3>Мы предлагаем удобный календарь выступлений, список докладчиков...</h3>
         </div>
+        <div class="row">
+            <div class="col-md-12 text-center" *ngIf="!isAuthorized()">
+                <a (click)="showLoginForm()" class="btn btn-lg btn-primary wow fadeIn" data-wow-delay="3s">Войти</a>
+<!--                <a (click)="showRegisterForm()" class="btn btn-lg btn-success wow fadeIn" data-wow-delay="3s">Зарегистрироваться</a>-->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <div class="login-form" *ngIf="loginFormDisplays">
+                    <cg-sign-in></cg-sign-in>
+                </div>
+                <div class="register-form">
+
+                </div>
+            </div>
+        </div>
+
     </header>
 
     <!-- About -->
@@ -39,8 +33,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <h2>Every time when you are going to select a speaker, you have a problem to recognize who has visited your congregation so far to do that once again!</h2>
-                    <p class="lead">This system has been created to make easier your work. Enjoy it!</p>
+                    <h2 class="wow zoomIn">Каждый раз когда вы выбираете какого докладчика пригласить, вы сталкиваетесь с проблемами: докладчик не должен выступать слишком часто, речь не должна звучать чаще раза в год</h2>
+                    <p class="lead wow fadeIn" data-wow-delay="2s">Эта система создана, чтобы <span class="text-accent">упростить вашу работу</span>. Пользуйтесь в удовольствие!</p>
                 </div>
             </div>
             <!-- /.row -->
@@ -50,110 +44,63 @@
 
     <!-- Services -->
     <!-- The circle icons use Font Awesome's stacked icon classes. For more information, visit http://fontawesome.io/examples/ -->
-    <section id="services" class="services bg-primary">
+    <section id="services" class="services">
         <div class="container">
             <div class="row text-center">
-                <div class="col-lg-10 col-lg-offset-1">
-                    <h2>Our Services</h2>
+                <div class="col-lg-10 col-lg-offset-1 wow fadeIn">
+                    <h2>Доступные возможности</h2>
                     <hr class="small">
                     <div class="row">
-                        <div class="col-md-3 col-sm-6">
+                        <div class="col-md-3 col-sm-6 wow fadeIn">
                             <div class="service-item">
                                 <span class="fa-stack fa-4x">
                                     <i class="fa fa-circle fa-stack-2x"></i>
                                     <i class="fa fa-cloud fa-stack-1x text-primary"></i>
                                 </span>
                                 <h4>
-                                    Speakers on cloud
+                                    Модуль докладчиков
                                 </h4>
-                                <p>No, they aren't in heaven. :-) <br> That means that you can access your speakers list easy by any device anywhere.</p>
+                                <p>Список докладчиков контролируется вами, удобно просматривается статистика выступлений и доступных речей у каждого докладчика</p>
                             </div>
                         </div>
-                        <div class="col-md-3 col-sm-6">
+                        <div class="col-md-3 col-sm-6 wow fadeIn">
                             <div class="service-item">
                                 <span class="fa-stack fa-4x">
                                     <i class="fa fa-circle fa-stack-2x"></i>
                                     <i class="fa fa-calendar fa-stack-1x text-primary"></i>
                                 </span>
                                 <h4>
-                                    Discourses schedule
+                                    Расписание выступлений
                                 </h4>
-                                <p>This system helps you to assign a speaker to your meeting. Comfortable comment system makes easier control of discourse assignment.</p>
+                                <p>Система помогает назначать подходящих докладчиков для выступления. Система коментирования позволяет записывать все что важно запомнить.</p>
                             </div>
                         </div>
-                        <div class="col-md-3 col-sm-6">
+                        <div class="col-md-3 col-sm-6 wow fadeIn">
                             <div class="service-item">
                                 <span class="fa-stack fa-4x">
                                     <i class="fa fa-circle fa-stack-2x"></i>
                                     <i class="fa fa-list fa-stack-1x text-primary"></i>
                                 </span>
                                 <h4>
-                                    Speeches history
+                                    Модуль речей
                                 </h4>
-                                <p>You can trace your speeches history. Using this system, you can find out when this speech has been talked last time in your congregation.</p>
+                                <p>Пользуясь этим модулем вы сможете легко узнать когда выбранная речь произносилась последний раз в вашем собрании или на когда запланированна.</p>
                             </div>
                         </div>
-                        <div class="col-md-3 col-sm-6">
+                        <div class="col-md-3 col-sm-6 wow fadeIn">
                             <div class="service-item">
                                 <span class="fa-stack fa-4x">
                                     <i class="fa fa-circle fa-stack-2x"></i>
                                     <i class="fa fa-compass fa-stack-1x text-primary"></i>
                                 </span>
                                 <h4>
-                                    Territories
+                                    Модуль участков
                                 </h4>
-                                <p>Coming soon...</p>
+                                <p>Скоро...</p>
                             </div>
                         </div>
                     </div>
                     <!-- /.row (nested) -->
-                </div>
-                <!-- /.col-lg-10 -->
-            </div>
-            <!-- /.row -->
-        </div>
-        <!-- /.container -->
-    </section>
-
-    <!-- Portfolio -->
-    <section id="portfolio" class="portfolio">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-10 col-lg-offset-1 text-center">
-                    <h2>Our Work</h2>
-                    <hr class="small">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="portfolio-item">
-                                <a href="#">
-                                    <img class="img-portfolio img-responsive" src="/skins/stylish/img/portfolio-1.jpg">
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="portfolio-item">
-                                <a href="#">
-                                    <img class="img-portfolio img-responsive" src="/skins/stylish/img/portfolio-2.jpg">
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="portfolio-item">
-                                <a href="#">
-                                    <img class="img-portfolio img-responsive" src="/skins/stylish/img/portfolio-3.jpg">
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="portfolio-item">
-                                <a href="#">
-                                    <img class="img-portfolio img-responsive" src="/skins/stylish/img/portfolio-4.jpg">
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /.row (nested) -->
-                    <a href="#" class="btn btn-dark">View More Items</a>
                 </div>
                 <!-- /.col-lg-10 -->
             </div>
@@ -169,7 +116,7 @@
                 <div class="col-lg-10 col-lg-offset-1 text-center">
                     <br>
                     <hr class="small">
-                    <p class="text-muted">Copyright &copy; Congregation App 2016</p>
+                    <p class="text-muted">Copyright &copy; Service Application 2016</p>
                 </div>
             </div>
         </div>

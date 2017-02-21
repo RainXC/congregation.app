@@ -23,11 +23,41 @@ table td {
     font-weight: 300 !important;
 }
 
-.text-vertical-center h1 {
-    font-weight: 300;
+.index-title h1 {
+    font-weight: 100;
+    color: #6b6b6b;
+    font-size: 4.5em;
 }
-.text-vertical-center .btn-dark {
+.index-title .btn-dark {
     font-weight: 200;
+}
+
+.index .index-title {
+    text-align: center;
+    margin-top: 300px;
+}
+
+.index .index-title h3 {
+    font-weight: 300;
+    color: #85898c;
+}
+
+.index-navbar {
+    border: none;
+    background: none;
+}
+
+.index-navbar .navbar-default {
+    border: none !important;
+    background-color: #ffffff !important;
+}
+
+.index-navbar .nav.navbar-nav {
+    display: none;
+}
+
+.index-navbar .nav.navbar-nav.navbar-right {
+    display: block;
 }
 
 .full-page-text {
@@ -547,4 +577,107 @@ table td {
     100% {
         background: #ff6f5b;
     }
+}
+
+.logo {
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: 400;
+    color: #2aa9cb;
+    /*animation: logo-animate 10s infinite;*/
+}
+.logo span {
+    color: #989898;
+    font-weight: 400;
+}
+
+.loading {
+    color: #2aa9cb;
+    animation: loading-animate 5s infinite;
+}
+
+@keyframes loading-animate {
+    0% {
+        color: #2aa9cb;
+    }
+    20% {
+        color: #5dcb7b;
+    }
+    40% {
+        color: #cb9168;
+    }
+    60% {
+        color: #cb839d;
+    }
+    80% {
+        color: #ad9ccb;
+    }
+    100% {
+        color: #2aa9cb;
+    }
+}
+
+
+.index .login-form .sign-in-form {
+    background: none;
+    border: none;
+    margin-top: 30px;
+}
+
+.index .login-form .sign-in-form h4.name {
+    display: none;
+}
+.index .login-form .sign-in-form .form-group label {
+    display: none;
+}
+.index .login-form .sign-in-form .checkbox {
+    display: none;
+}
+.index .login-form .sign-in-form .form-group label {
+    display: none;
+}
+
+.index .login-form .sign-in-form .form-group {
+    padding: 10px;
+}
+
+.index .login-form .sign-in-form .form-group input {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid #009dc0;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    box-shadow: none;
+    font-size: 22px;
+    font-weight: 100;
+    color: #009dc0;
+}
+
+.index .login-form .sign-in-form .btn-primary {
+    margin-top: 30px;
+    padding: 10px 16px;
+    font-size: 18px;
+    line-height: 1.3333333;
+    border-radius: 6px;
+}
+
+.circle-pulse-multiple .loader {
+    width: 250px;
+    height: 250px;
+}
+
+.text-accent {
+    color: #2fa8cb;
+}
+
+.te
+
+.services .fa {
+    color: #737373;
+}
+
+.services .fa.text-primary {
+    color: #ffffff;
 }

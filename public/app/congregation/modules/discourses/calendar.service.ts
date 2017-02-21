@@ -6,8 +6,8 @@ import 'rxjs/add/operator/map';
 export class DiscourseCalendarService {
     constructor( private http: Http){}
 
-    list() {
-        return this.http.get('/api/discourses/calendar');
+    list(from: any, to: any) {
+        return this.http.get(`/api/discourses/calendar?from=${from}&to=${to}`);
     }
 
 

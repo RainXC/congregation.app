@@ -7,6 +7,7 @@ import {DiscourseService} from "./discourse.service";
 import {Router} from "@angular/router";
 import {UserService} from "../../../core/authorization/service/user.service";
 import {Discourse} from "./discourse.class";
+import * as moment from 'moment/moment';
 
 @Component({
     selector: 'cg-discourses',
@@ -16,6 +17,8 @@ import {Discourse} from "./discourse.class";
 })
 export class DiscoursesComponent {
     public discourses: Array<any> = [];
+    private from: any;
+    private to: any;
 
     constructor(
         private title: Title,
@@ -25,6 +28,9 @@ export class DiscoursesComponent {
     ) {
         title.setTitle('Congregation App. Discourses list');
         this.loadDiscourses();
+
+        this.from = moment();
+        this.to   = moment().endOf("year");
     }
 
     loadDiscourses(){

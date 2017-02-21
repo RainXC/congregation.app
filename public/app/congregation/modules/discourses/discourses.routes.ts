@@ -6,7 +6,7 @@ import {DiscoursesCalendarComponent} from "./calendar.component";
 import {AssignComponent} from "./assign.component";
 
 const routes: Routes = [
-    { path: 'discourses',  component: DiscoursesCalendarComponent },
+    { path: 'discourses',  component: DiscoursesComponent },
     { path: 'discourses/calendar',  component: DiscoursesCalendarComponent },
     { path: 'discourses/:id',  component: DiscourseComponent },
     { path: 'discourses/:id/assign',  component: AssignComponent },

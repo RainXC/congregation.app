@@ -168,6 +168,7 @@ hr.small {
 
 .about {
     padding: 50px 0;
+    background: #f9f9f9;
 }
 
 /* Services */
@@ -241,7 +242,7 @@ hr.small {
 /* Footer */
 
 footer {
-    padding: 100px 0;
+    padding: 10px 0;
 }
 
 #to-top {

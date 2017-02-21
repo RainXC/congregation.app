@@ -1,34 +1,29 @@
-<div id="app">
-    <cg-header></cg-header>
+    <div class="row years" *ngFor="let year of years;">
+        <div class="col-md-12">
+            <div class="months animated fadeIn animation-delay-5" *ngFor="let month of year.months; let $index = index;">
+                <div class="row">
+                    <h3 class="monthName">{{month.name}} <span>{{month.year}}</span></h3>
+                </div>
 
-    <div class="container animated fadeIn">
-        <div class="row years" *ngFor="let year of years;">
-            <div class="col-md-12">
-                <div class="months animated fadeIn animation-delay-5" *ngFor="let month of year.months; let $index = index;">
-                    <div class="row">
-                        <h3 class="monthName">{{month.name}} <span>{{month.year}}</span></h3>
-                    </div>
+                <div class="row">
+                    <div class="col-md-4 col-sm-6 {{!discourse.assignment?'notAssigned':''}} days" *ngFor="let discourse of month.discourses;" [routerLink]="['/discourses', discourse.id]">
+                        <div class="dayNumber">
+                            <span class="indicator indicator-danger indicator-danger-animated" *ngIf="!discourse.assignment"></span>
+                            <span class="indicator indicator-{{discourse.assignment.status.color}}" *ngIf="discourse.assignment"></span> {{discourse.timeDetails.day}}
+                        </div>
 
-                    <div class="row">
-                        <div class="col-md-4 col-sm-6 {{!discourse.assignment?'notAssigned':''}} days" *ngFor="let discourse of month.discourses;" [routerLink]="['/discourses', discourse.id]">
-                            <div class="dayNumber">
-                                <span class="indicator indicator-danger indicator-danger-animated" *ngIf="!discourse.assignment"></span>
-                                <span class="indicator indicator-{{discourse.assignment.status.color}}" *ngIf="discourse.assignment"></span> {{discourse.timeDetails.day}}
+                        <div class="row">
+                            <div class="col-md-12" *ngIf="discourse.assignment">
+                                <h4>
+                                    {{discourse.assignment?.speaker.firstname}}
+                                    {{discourse.assignment?.speaker.lastname}}
+                                </h4>
+                                <h5>
+                                    {{discourse.assignment?.speech.name}}
+                                </h5>
                             </div>
-
-                            <div class="row">
-                                <div class="col-md-12" *ngIf="discourse.assignment">
-                                    <h4>
-                                        {{discourse.assignment?.speaker.firstname}}
-                                        {{discourse.assignment?.speaker.lastname}}
-                                    </h4>
-                                    <h5>
-                                        {{discourse.assignment?.speech.name}}
-                                    </h5>
-                                </div>
-                                <div class="col-md-12" *ngIf="!discourse.assignment">
-                                    <h1 class="notAssignedLabel">You can assign a speaker, whatever you want</h1>
-                                </div>
+                            <div class="col-md-12" *ngIf="!discourse.assignment">
+                                <h1 class="notAssignedLabel">You can assign a speaker, whatever you want</h1>
                             </div>
                         </div>
                     </div>
@@ -36,6 +31,3 @@
             </div>
         </div>
     </div>
-
-    <cg-footer></cg-footer>
-</div>

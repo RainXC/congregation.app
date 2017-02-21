@@ -26,6 +26,7 @@
     <link href="/skins/stylish/css/stylish-portfolio.css" rel="stylesheet">
 
     <link href="/node_modules/animate.css/animate.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/spinners.css">
 
     <!-- Custom Fonts -->
     <link href="/skins/stylish/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -44,13 +45,20 @@
 
     <link rel="stylesheet" href="/css/custom.css">
 
-    <script src="node_modules/ng2-pagination/dist/ng2-pagination-bundle.js"></script>
+    <script src="/node_modules/ng2-pagination/dist/ng2-pagination-bundle.js"></script>
+    <script src="/node_modules/wowjs/dist/wow.min.js"></script>
 </head>
 <!-- 3. Display the application -->
 <body>
 <index-app>
     <div class="full-page-text">
-        <h1 class="loading">Loading...</h1>
+        <div class="loader-container circle-pulse-multiple">
+            <div class="loader">
+                <div class="circle-1"></div>
+                <div class="circle-2"></div>
+                <div class="circle-3"></div>
+            </div>
+        </div>
     </div>
 </index-app>
 

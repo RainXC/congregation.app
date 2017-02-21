@@ -169,6 +169,12 @@
                                 <button class="btn btn-default" (click)="returnToSpeakers()">Return</button>
                                 <div class="speaker-selected">
                                     {{speakerSelected.speaker.firstname}} {{speakerSelected.speaker.lastname}}, <small>{{speakerSelected.speaker.phone}}, {{speakerSelected.speaker.congregation.name}}</small>
+                                    <div *ngIf="speakerSelected.nearestDiscourse" class="additional">
+                                        {{speakerSelected.nearestDiscourse.time | fromNow:discourse?.getTime()}}, {{speakerSelected.nearestDiscourse.time | date}}
+                                    </div>
+                                    <div *ngIf="!speakerSelected.nearestDiscourse" class="additional">
+                                        Nearest discourse is not available
+                                    </div>
                                 </div>
                             </div>
                         </div>
