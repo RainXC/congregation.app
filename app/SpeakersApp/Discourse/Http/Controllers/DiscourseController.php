@@ -5,12 +5,16 @@ namespace App\SpeakersApp\Discourse\Http\Controllers;
 use App\SpeakersApp\Discourse\Model\Discourse;
 use App\SpeakersApp\Discourse\View\DiscourseCalendar;
 use App\SpeakersApp\Discourse\View\DiscourseDetails;
+use App\SpeakersApp\Speaker\Model\Speaker;
+use App\SpeakersApp\Speech\Model\Speech;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
+use Maatwebsite\Excel\Classes\LaravelExcelWorksheet;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DiscourseController extends Controller
 {
@@ -161,5 +165,112 @@ class DiscourseController extends Controller
         $discourse = $discourses->findOrFail((int)Input::get('objectId'));
 
         return response()->json($discourse->setSpeaker(Input::get('speakerId')));
+    }
+
+    public function export()
+    {
+        $discoursesData = $speakersData = $speechesData = [];
+        $discourses = Discourse::all();
+        $speeches   = Speech::all();
+        $speakers   = Speaker::all();
+
+        foreach ( $discourses as $discourse ) {
+            if ( $discourse->getAssignment() ) {
+                $discoursesData[$discourse->time->format('Y')][] = [
+                    $discourse->time->format('d-m-Y H:i'),
+                    $discourse->getAssignment()->speaker->getLastname() .' '. $discourse->getAssignment()->speaker->getFirstname(),
+                    $discourse->getAssignment()->speaker->congregation->getName(),
+                    $discourse->getAssignment()->speech->getName(),
+                    $discourse->getAssignment()->speech->getCode(),
+                ];
+            }
+        }
+
+        foreach ( $speeches as $speech ) {
+            $speechesData[] = [
+                $speech->getCode(),
+                $speech->getName(),
+            ];
+        }
+
+        foreach ( $speakers as $speaker ) {
+            $speakersData[] = [
+                $speaker->getLastname() . ' ' . $speaker->getFirstname(),
+                $speaker->getPhone(),
+                $speaker->congregation->getName(),
+            ];
+        }
+
+        Excel::create('Публичные встречи - '.Carbon::now(), function($excel) use($discoursesData, $speechesData, $speakersData) {
+            $worksheet = new LaravelExcelWorksheet();
+            foreach( $discoursesData as $key=>$data ) {
+                $invalidCharacters = $worksheet->getInvalidCharacters();
+                $key = str_replace($invalidCharacters, '', $key);
+
+                $excel->sheet($key, function($sheet) use($data) {
+                    $sheet->freezeFirstRow();
+                    $sheet->prependRow([
+                        'Дата и время',
+                        'Докладчик',
+                        'Собрание',
+                        'Название речи',
+                        'Номер речи'
+                    ]);
+                    $sheet->fromArray($data, null, 'A4', false, false);
+                    $sheet->setStyle(array(
+                        'font' => array(
+                            'name'      =>  'Calibri',
+                            'size'      =>  15
+                        )
+                    ));
+                    $sheet->row(1, function($row) {
+                        $row->setBackground('#eeeeee');
+                        $row->setFontColor('#333333');
+                        $row->setFontWeight('bold');
+                    });
+                });
+            }
+
+            $excel->sheet('Докладчики', function($sheet) use($speakersData) {
+                $sheet->freezeFirstRow();
+                $sheet->prependRow([
+                    'ФИО',
+                    'Телефон',
+                    'Собрание'
+                ]);
+                $sheet->fromArray($speakersData, null, 'A4', false, false);
+                $sheet->setStyle(array(
+                    'font' => array(
+                        'name'      =>  'Calibri',
+                        'size'      =>  15
+                    )
+                ));
+                $sheet->row(1, function($row) {
+                    $row->setBackground('#eeeeee');
+                    $row->setFontColor('#333333');
+                    $row->setFontWeight('bold');
+                });
+            });
+
+            $excel->sheet('Речи', function($sheet) use($speechesData) {
+                $sheet->freezeFirstRow();
+                $sheet->prependRow([
+                    'Номер речи',
+                    'Название речи'
+                ]);
+                $sheet->fromArray($speechesData, null, 'A4', false, false);
+                $sheet->setStyle(array(
+                    'font' => array(
+                        'name'      =>  'Calibri',
+                        'size'      =>  15
+                    )
+                ));
+                $sheet->row(1, function($row) {
+                    $row->setBackground('#eeeeee');
+                    $row->setFontColor('#333333');
+                    $row->setFontWeight('bold');
+                });
+            });
+        })->export('xls');
     }
 }

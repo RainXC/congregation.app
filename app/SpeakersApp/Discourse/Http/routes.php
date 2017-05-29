@@ -13,6 +13,8 @@ Route::group(['middleware' => 'web'], function () {
     Route::put('discourses/assignments/{assignmentId}/cancel', 'DiscourseAssignmentsController@cancel');
     Route::put('discourses/assignments/create', 'DiscourseAssignmentsController@create');
 
+    Route::get('discourses/export', 'DiscourseController@export');
+
     Route::resource('discourses/{discourseId}/log', 'DiscourseHistoryController');
     Route::resource('discourses', 'DiscourseController');
 });
